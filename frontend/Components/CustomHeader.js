@@ -1,31 +1,16 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Image, TouchableOpacity, useColorScheme } from "react-native";
-import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import ModalMenu from './ModalMenu';
-import { useTheme } from "react-native-paper";
-
+import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 export default function CustomHeader({navigation, disableSearch}) {
-
-  const [ isOpen, setIsOpen ] = useState(false);
-  const { colors } = useTheme();
-  const scheme = useColorScheme();
 
   return (
     <View style={styles.viewContainer}>
-      <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
-        <Image source={require('../black-logo.png')} style={styles.logo}/>
-      </TouchableOpacity>
-      {/* <View style={styles.right}>
-        {!disableSearch && <TouchableOpacity onPress={()=>navigation.navigate('Search')} style={{ marginRight: 16}}>
-          <Ionicons name="search-outline" size={23} color={colors.color6} />
-        </TouchableOpacity>}
-        <TouchableOpacity onPress={()=>setIsOpen(true)}>
-          <SimpleLineIcons name="menu" size={22} color={colors.color6} /> 
-        </TouchableOpacity>
+      <View>
+        <Text style={{color: '#9E9E9E'}}>Hello again</Text>
+        <Text style={{fontSize: 24, fontWeight: '700', lineHeight: 27}}>David Robinson</Text>
       </View>
-
-      { isOpen && <ModalMenu onClose={()=>setIsOpen(false)} navigation={navigation}/>} */}
+      <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
+        <Image source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRSH1b36fzoEmkHaGdCizu25wFLTcj5weH9xRgOHRAnwLMPvr1Rs9GcYNM8_-b5bKtsNA&usqp=CAU'}} style={styles.logo}/>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -35,12 +20,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: 'space-between',
+    marginTop: 8,
     height: 70,
-    // paddingHorizontal: 10,
   },
   logo: {
-    height: 20,
-    width: 200
+    height: 60,
+    width: 60,
+    borderRadius: 8
   },
   right: {
     flex: 1,

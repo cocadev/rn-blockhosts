@@ -37,7 +37,7 @@ const ROUTES = [
   { name: 'SplashScreen', component: SplashScreen },
   { name: 'Auth', component: LoginScreen },
   // { name: 'Home', component: HomeScreen },
-  { name: 'Home', component: HomeScreen },
+  { name: 'Home', component: TabNFTAsset },
   { name: 'CreateNFT', component: CreateNFTScreen },
   { name: 'NFTDetail', component: NFTDetailScreen },
   { name: 'NFTOwner', component: NFTOwnerScreen },

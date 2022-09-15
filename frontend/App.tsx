@@ -19,6 +19,7 @@ import ScannerScreen from "./pages/scanner";
 import AllGatesScreen from "./pages/allGates";
 import DetailGateScreen from "./pages/detailGate";
 import VideoDetailScreen from "./pages/videoDetail";
+import CreateProfileScreen from "./pages/createProfile";
 import MyNFTScreen from "./pages/myNFTs";
 
 import { Provider } from 'react-redux';
@@ -35,6 +36,7 @@ const Stack = createStackNavigator();
 const ROUTES = [
   { name: 'SplashScreen', component: SplashScreen },
   { name: 'Auth', component: LoginScreen },
+  // { name: 'Home', component: HomeScreen },
   { name: 'Home', component: HomeScreen },
   { name: 'CreateNFT', component: CreateNFTScreen },
   { name: 'NFTDetail', component: NFTDetailScreen },

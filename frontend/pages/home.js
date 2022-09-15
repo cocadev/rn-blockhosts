@@ -1,27 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect} from "react";
 import { StyleSheet, Text, Image, View, TouchableOpacity, ImageBackground,  } from 'react-native';
-import LinearButton from "../../Components/LinearButton";
 import { useMoralis, useMoralisCloudFunction, useMoralisWeb3Api } from "react-moralis";
 import { useDispatch, useSelector } from "react-redux";
-import { onGetData } from "../../store/actions/nfts/nfts";
-import { getUserData } from "../../store/actions/users/users";
-import { useGetChainId } from "../../hooks/useGetChainId";
-import { useWalletConnect } from "../../WalletConnect";
-import { Button, Paragraph, Dialog, Portal, Provider, ActivityIndicator, useTheme } from "react-native-paper";
+import { onGetData } from "../store/actions/nfts/nfts";
+import { getUserData } from "../store/actions/users/users";
+import { useGetChainId } from "../hooks/useGetChainId";
 import { useToast } from "react-native-toast-notifications";
-import { PROD, VERSION } from "../../config/keys";
+import { PROD,  } from "../config/keys";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({navigation}) => {
 
-  const { colors } = useTheme();
-  const { isAuthenticated, Moralis, authError, authenticate, isAuthenticating, logout } = useMoralis();
+  const { Moralis, logout } = useMoralis();
   const { nfts } = useSelector(state => state.nfts)
   const { users } = useSelector(state => state.users)
   const dispatch = useDispatch();
   const { chainId, setChainId } = useGetChainId();
   const Web3Api = useMoralisWeb3Api();
-  const connector = useWalletConnect();
-  const [visible, setVisible] = useState(false);
+
   const toast = useToast();
   const { data: userData } = useMoralisCloudFunction('loadUsers');
 
@@ -71,11 +66,9 @@ const HomeScreen = ({ navigation }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const hideDialog = () => setVisible(false);
-
   const handleCryptoLogin = () => {
 
-    authenticate({ 
+    authenticate({
       connector,
       // provider: "walletconnect",
       // mobileLinks: ["metamask"],
@@ -91,76 +84,30 @@ const HomeScreen = ({ navigation }) => {
           }
         }
       })
-      .catch(() => {});
+      .catch(() => { });
   };
 
-  const onNavigate = (e) => {
-    navigation.navigate(e)
-  }
-
   return (
-    <View
-      style={styles.root}
-    >
+    <View style={styles.root}>
 
       <View style={styles.viewContainer}>
-        <Image source={require('../../black-logo.png')} style={styles.logo} />
-        <View style={{ flexDirection: 'row', marginTop: 5}}>
-          {!PROD && <Text style={{color: 'red'}}>Test &nbsp;</Text>}
-          <Text style={{color: '#fff'}}>{'BlackHosts'}</Text>
-        </View>
+        <Image source={require('../../assets/logo.png')} style={styles.logo} />
+        <Text style={{color: '#fff', fontSize: 25}}>{'BlackHosts Wallet'}</Text>
+        <Text style={{color: '#fff', fontSize: 17, textAlign: 'center', marginTop: 12, maxWidth: 240}}>{'Buy, Store and Redeem Hospitality Tokens Easily'}</Text>
       </View>
 
-      <View style={styles.modalView}>
-
-        <TouchableOpacity onPress={() => onNavigate('CreateNFT')}>
-          <Text style={[styles.t1, { color: colors.text }]}>Mint </Text>
+      <View style={{ justifyContent: 'center', alignItems: 'center'}}>
+        <TouchableOpacity 
+          style={[styles.button, { backgroundColor: '#fff'}]} 
+          onPress={()=>navigation.navigate("Explore")}
+        >
+          <Text style={{color: '#000', fontSize: 16}}>Login</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => onNavigate('Explore')}>
-          <Text style={[styles.t1, { color: colors.text }]}>Market </Text>
+        <TouchableOpacity style={styles.button} onPress={handleCryptoLogin}>
+          <Text style={{color: '#fff', fontSize: 16}}>Connect External Wallet</Text>
         </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => onNavigate('AllGates')}>
-          <Text style={[styles.t1, { color: colors.text }]}>Communites </Text>
-        </TouchableOpacity>
-
-        {isAuthenticated && <TouchableOpacity onPress={() => onNavigate('MyNFT')}>
-          <Text style={[styles.t1, { color: colors.text }]}>My NFTs </Text>
-        </TouchableOpacity>}
-
-        {isAuthenticated && <TouchableOpacity onPress={() => onNavigate('Profile')}>
-          <Text style={[styles.t1, { color: colors.text }]}>Profile </Text>
-        </TouchableOpacity>}
-
       </View>
-
-      {!isAuthenticated && <View style={{ marginHorizontal: 30, marginVertical: 20 }}>
-        <View>
-          {authError && (
-            <Portal>
-              <Dialog visible={visible} onDismiss={hideDialog}>
-                <Dialog.Title>Authentication error:</Dialog.Title>
-                <Dialog.Content>
-                  <Paragraph>
-                    {authError ? authError.message : ""}
-                  </Paragraph>
-                </Dialog.Content>
-                <Dialog.Actions>
-                  <Button onPress={hideDialog}>Done</Button>
-                </Dialog.Actions>
-              </Dialog>
-            </Portal>
-          )}
-          {isAuthenticating && (
-            <ActivityIndicator animating={true} color={"white"} />
-          )}
-        </View>
-
-        <View style={{ margin: 20, marginTop: 40 }}>
-          <LinearButton title="Connect wallet" onClick={handleCryptoLogin} />
-        </View>
-      </View>}
 
       <View style={{ height: 20 }} />
 
@@ -170,7 +117,8 @@ const HomeScreen = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#22dbbb'
   },
   centeredView: {
     flex: 1,
@@ -198,14 +146,23 @@ const styles = StyleSheet.create({
     marginTop: 40
   },
   logo: {
-    height: 20,
-    width: 200
+    height: 160,
+    width: 160
   },
   right: {
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'center',
     flexDirection: 'row',
+  },
+  button: {
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    paddingVertical: 20, 
+    minWidth: 250, 
+    backgroundColor: '#0c4d41', 
+    borderRadius: 12, 
+    marginTop: 20
   }
 });
 

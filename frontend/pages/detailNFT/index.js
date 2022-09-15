@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import { StyleSheet, Dimensions, TouchableOpacity, View, Text, ScrollView, Image } from "react-native";
 import Icon from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import ModalPlaceBid from "../../Components/ModalPlaceBid";
 import { useTheme } from "react-native-paper";
 import { Video } from "expo-av";
 import { DEMO_AVATAR } from "../../config/keys";
-import TimeAgo from 'react-native-timeago';
-import LinearButton from "../../Components/LinearButton";
 import DescriptionDetail from './descriptionDetail';
 import { useMoralisQuery } from "react-moralis";
 import { useSelector } from "react-redux";
@@ -20,15 +17,7 @@ const DetailNFT = ({ route, navigation }) => {
 
   const { metadata, username, user_avatar, owner_of, token_id } = route.params;
   const { image, name, description, price, isVideo } = metadata;
-  const [bidModal, setBidModal] = useState(false);
   const { colors } = useTheme();
-  const { users } = useSelector(state => state.users)
-  const { data: minterPricedata } = useMoralisQuery("OrderData", query => query.equalTo("tokenId", token_id).ascending("createdAt"));
-
-  const [changedPrice, setChangedPrice] = useState();
-
-  const minterAddress = minterPricedata.length > 0 ? (minterPricedata[0]?.attributes?.maker) : (owner_of || null);
-  const minter = minterAddress ? users?.find(z => (z.account) === minterAddress) : null;
 
   return (
     <View style={[styles.container, { backgroundColor: colors.f00 }]}>
@@ -38,83 +27,25 @@ const DetailNFT = ({ route, navigation }) => {
           <Icon name="left" size={25} color={colors.color2} />
         </TouchableOpacity>
 
-        {!isVideo ? <Image source={{ uri: image }} style={styles.banner} />
-          : <Video
-            source={{ uri: image }}
-            rate={1.0}
-            volume={0}
-            isMuted={true}
-            resizeMode="cover"
-            shouldPlay
-            isLooping
-            style={styles.video}
-          />}
+        <Image source={{ uri: image }} style={styles.banner} />
 
-        <View style={[styles.row, { justifyContent: 'space-between', margin: 12 }]}>
-          <Text style={[styles.t3, { color: colors.color2 }]}>{name}</Text>
+        <View >
+          <Text style={[styles.t1, { color: colors.color2 }]}>{name}</Text>
+          <Text style={[styles.t2, { color: colors.color2 }]}>
+            The standard Lorem Ipsum passage, used since the 1500s
+
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </Text>
         </View>
 
-        <View style={styles.row}>
-          <Image
-            style={styles.tinyLogo}
-            source={{ uri: user_avatar }}
-          />
-          <Text style={[styles.nameText, { color: colors.text }]}>&nbsp;&nbsp;{username}</Text>
-        </View>
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#727375'}]} >
+          <Text style={{ color: '#fff', fontSize: 16 }}>Share</Text>
+        </TouchableOpacity>
 
-        <Text style={[styles.t2, { color: colors.color5 }]}>
-          {description?.replace('<p>', '')?.replace('</p>', '')}
-        </Text>
-
-        <DescriptionDetail data={route.params} minter={minter}/>
-
-        <View style={[styles.box2, { backgroundColor: colors.primary3 }]}>
-          <View style={styles.row}>
-            <Text style={[styles.t3, { color: colors.color2 }]}>{price} ETH</Text>
-            <Text style={styles.t7}>&nbsp;&nbsp;${price * 4300}</Text>
-          </View>
-          <View style={{ height: 20 }} />
-          <SellButton data={route.params} {...{ changedPrice, setChangedPrice, minter}} />
-        </View>
-
-        <Text style={[styles.t5, { margin: 12, marginTop: 32, marginBottom: 0, color: colors.color3 }]}>Activity</Text>
-
-        <View style={[styles.box3, { backgroundColor: colors.primary3 }]}>
-          <View style={[styles.row, { alignItems: 'flex-start' }]}>
-            <Image source={{ uri: user_avatar }} style={styles.tinyAvatar} />
-            <View>
-              <Text style={[styles.t4, { color: colors.color2 }]}>Bid place by @pawel09</Text>
-              <Text style={styles.t9}>June 06, 2021 at 12:00am</Text>
-              <View style={styles.row}>
-                <Text style={[styles.t4, { color: colors.color2 }]}>1.00 ETH</Text>
-                <Text style={[styles.t7, { fontSize: 13 }]}>&nbsp;$2,683.73</Text>
-              </View>
-            </View>
-          </View>
-          <Feather name="external-link" size={24} color={colors.color5} />
-        </View>
-
-        <View style={[styles.box3, { backgroundColor: colors.primary3 }]}>
-          <View style={[styles.row, { alignItems: 'flex-start' }]}>
-            <Image source={{ uri: DEMO_AVATAR }} style={styles.tinyAvatar} />
-            <View>
-              <Text style={[styles.t4, { color: colors.color2 }]}>Created NFT by minter</Text>
-              <Text style={styles.t9}>June 06, 2021 at 12:00am</Text>
-              <View style={styles.row}>
-                <Text style={[styles.t4, { color: colors.color2 }]}>1.00 ETH</Text>
-                <Text style={[styles.t7, { fontSize: 13 }]}>&nbsp;$2,683.73</Text>
-              </View>
-            </View>
-          </View>
-          <Feather name="external-link" size={24} color={colors.color5} />
-        </View>
-
+        <TouchableOpacity style={styles.button} >
+          <Text style={{ color: '#fff', fontSize: 16 }}>Buy Token</Text>
+        </TouchableOpacity>
         <View style={{ height: 20 }} />
-
-        {
-          bidModal &&
-          <ModalPlaceBid onClose={() => setBidModal(false)} />
-        }
 
       </ScrollView>
     </View>
@@ -167,21 +98,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#000',
   },
-  t2: {
+  t1: {
     fontSize: 13,
-    fontWeight: '500',
+    fontWeight: '700',
     marginHorizontal: 4,
     marginTop: 5
+  },
+  t2: {
+    marginTop: 12,
+    fontSize: 14,
+    fontWeight: '500'
   },
   nameText: {
     fontSize: 16,
     fontWeight: "bold",
     textAlign: 'center',
   },
-  t3: {
-    fontSize: 24,
-    fontWeight: '700'
-  },
+
   t4: {
     fontSize: 18,
     marginLeft: 12,
@@ -238,6 +171,16 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginBottom: 5
   },
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+    minWidth: 250,
+    backgroundColor: '#22DBBB',
+    borderRadius: 12,
+    marginTop: 20,
+    marginHorizontal: 30
+  }
 });
 
 export default DetailNFT;

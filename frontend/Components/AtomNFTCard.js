@@ -5,7 +5,7 @@ import { View, StyleSheet, TouchableOpacity, Text, Image } from "react-native";
 import { useTheme } from "react-native-paper";
 import UtilService from "../utils/utilService";
 
-export default function AtomNFTCard({navigation, data, metadata, type, nftId, supply, item}) {
+export default function AtomNFTCard({ navigation, data, metadata, type, nftId, supply, item }) {
 
   const { colors } = useTheme();
   const { user } = useMoralis();
@@ -39,26 +39,17 @@ export default function AtomNFTCard({navigation, data, metadata, type, nftId, su
   }
 
   return (
-    <View style={[styles.itemContainer, { flexDirection: type === 1 ? 'row' : 'column', backgroundColor: colors.primary3}]}>
+    <View style={[styles.itemContainer, { flexDirection: type === 1 ? 'row' : 'column', backgroundColor: colors.primary3 }]}>
       <TouchableOpacity onPress={onGoNFT}>
-        {!isVideo && <Image
+        <Image
           source={{ uri: image }}
           style={type === 1 ? styles.logo : styles.logo2}
-        />}
-        {isVideo && <Video
-          source={{ uri: image }}
-          rate={1.0}
-          volume={0}
-          isMuted={true}
-          resizeMode="cover"
-          shouldPlay
-          isLooping
-          style={type === 1 ? styles.logo : styles.logo2}
-        />}
+        />
+
       </TouchableOpacity>
 
       <View style={styles.view}>
-        <Text style={[styles.title, { color: colors.color2}]} numberOfLines={1}>{name}- {isVideo ? 'Video' : 'Image'}</Text>
+        <Text style={[styles.title, { color: colors.color2 }]} numberOfLines={1}>{name}- {isVideo ? 'Video' : 'Image'}</Text>
         <Text style={styles.erc1155}>{supply || ''}</Text>
 
         <View style={styles.tt}>
@@ -67,10 +58,10 @@ export default function AtomNFTCard({navigation, data, metadata, type, nftId, su
           </TouchableOpacity>
 
           <View style={{ marginLeft: 6, flex: 1 }}>
-            <Text style={[styles.name, { color: colors.color4}]} numberOfLines={1}> {username || ''}</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center'}}>
-              <Image source={{ uri: UtilService.CurrencyIcon(chain)}} style={{ width: 30, height: 30}}/>
-              <Text style={[styles.name, { fontWeight: '400', color: colors.color5, fontSize: 14 }]}> {metadata?.price || 0 } </Text>
+            <Text style={[styles.name, { color: colors.color4 }]} numberOfLines={1}> {username || ''}</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Image source={{ uri: UtilService.CurrencyIcon(chain) }} style={{ width: 30, height: 30 }} />
+              <Text style={[styles.name, { fontWeight: '400', color: colors.color5, fontSize: 14 }]}> {metadata?.price || 0} </Text>
             </View>
           </View>
         </View>
@@ -130,8 +121,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 12,
-  }, 
-  ercText:{
+  },
+  ercText: {
     color: '#fff',
     position: 'absolute',
     left: 0

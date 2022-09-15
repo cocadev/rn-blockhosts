@@ -19,7 +19,7 @@ import ScannerScreen from "./pages/scanner";
 import AllGatesScreen from "./pages/allGates";
 import DetailGateScreen from "./pages/detailGate";
 import VideoDetailScreen from "./pages/videoDetail";
-import CreateProfileScreen from "./pages/createProfile";
+import MyTokensScreen from "./pages/myTokens";
 import MyNFTScreen from "./pages/myNFTs";
 
 import { Provider } from 'react-redux';
@@ -37,7 +37,7 @@ const ROUTES = [
   { name: 'SplashScreen', component: SplashScreen },
   { name: 'Auth', component: LoginScreen },
   // { name: 'Home', component: HomeScreen },
-  { name: 'Home', component: TabNFTAsset },
+  { name: 'Home', component: MyTokensScreen },
   { name: 'CreateNFT', component: CreateNFTScreen },
   { name: 'NFTDetail', component: NFTDetailScreen },
   { name: 'NFTOwner', component: NFTOwnerScreen },

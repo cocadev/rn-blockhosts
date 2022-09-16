@@ -10,7 +10,7 @@ import { PROD,  } from "../config/keys";
 
 const HomeScreen = ({navigation}) => {
 
-  const { Moralis, logout } = useMoralis();
+  const { Moralis, logout, authenticate } = useMoralis();
   const { nfts } = useSelector(state => state.nfts)
   const { users } = useSelector(state => state.users)
   const dispatch = useDispatch();
@@ -20,53 +20,10 @@ const HomeScreen = ({navigation}) => {
   const toast = useToast();
   const { data: userData } = useMoralisCloudFunction('loadUsers');
 
-  useEffect(() => {
-    if (users?.length === 0 && userData?.length > 0) {
-      dispatch(getUserData(userData?.map(item => {
-        return {
-          id: item.id,
-          createdAt: item.attributes.createdAt,
-          account: item.attributes.ethAddress,
-          avatar: item.attributes.avatar,
-          banner: item.attributes.banner,
-          GUID: item.attributes.GUID,
-          email: item.attributes.email,
-          phone: item.attributes.phone,
-          username: item.attributes.username,
-          twitter: item.attributes.twitter,
-          instagram: item.attributes.instagram,
-          site: item.attributes.site,
-          bio: item.attributes.bio,
-        }
-      })))
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userData])
-  useEffect(()=> {
-    if(chainId && chainId !== '0x1' && PROD){
-      toast.show(`Please connect the mainnet(Ethereum Network)!`);
-      logout();
-      setChainId(-1);
-    }
-    if(chainId && chainId === '0x1' && !PROD){
-      toast.show(`Please connect test networks(Ropsten, Rinkeby, Mumbai or Test BSC)!`);
-      logout();
-      setChainId(-1);
-    }
-  }, [chainId])
-
-  useEffect(() => {
-    if (nfts.length === 0 && Web3Api) {
-      setTimeout(() => {
-        const LazyMints = Moralis.Object.extend("LazyMints");
-        const query = new Moralis.Query(LazyMints).limit(5000);
-        dispatch(onGetData(query, chainId, Web3Api))
-      }, 1000)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const handleCryptoLogin = () => {
+
+    navigation.navigate("CreateProfile");
+    return false;
 
     authenticate({
       connector,
@@ -92,8 +49,8 @@ const HomeScreen = ({navigation}) => {
 
       <View style={styles.viewContainer}>
         <Image source={require('../../assets/logo.png')} style={styles.logo} />
-        <Text style={{color: '#fff', fontSize: 25}}>{'BlackHosts Wallet'}</Text>
-        <Text style={{color: '#fff', fontSize: 17, textAlign: 'center', marginTop: 12, maxWidth: 240}}>{'Buy, Store and Redeem Hospitality Tokens Easily'}</Text>
+        <Text style={{color: '#fff', fontSize: 25, marginTop: 12}}>{'BlackHosts Wallet'}</Text>
+        <Text style={{color: '#fff', fontSize: 15, textAlign: 'center', marginTop: 18, maxWidth: 240}}>{'Buy, Store and Redeem Hospitality Tokens Easily'}</Text>
       </View>
 
       <View style={{ justifyContent: 'center', alignItems: 'center'}}>
@@ -118,7 +75,8 @@ const HomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: '#22dbbb'
+    backgroundColor: '#22dbbb',
+    justifyContent: 'space-around'
   },
   centeredView: {
     flex: 1,
@@ -146,8 +104,8 @@ const styles = StyleSheet.create({
     marginTop: 40
   },
   logo: {
-    height: 160,
-    width: 160
+    height: 130,
+    width: 130
   },
   right: {
     flex: 1,

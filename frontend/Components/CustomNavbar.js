@@ -3,16 +3,37 @@ import { View, StyleSheet, Image } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
+import { useRoute } from '@react-navigation/native';
 
-export default function CustomNavbar({navigation, title}) {
+export default function CustomNavbar() {
+
+  const navigation = useNavigation();
+  const route = useRoute();
 
   return (
     <View style={styles.viewContainer}>
-      <MaterialCommunityIcons name="wallet" size={28} color="#CACACA" />
-      <MaterialCommunityIcons name="qrcode-scan" size={28} color="#CACACA" />
-      <Image source={require('../../assets/logo.png')} style={styles.logo} />
-      <FontAwesome5 name="map-marked-alt" size={28} color="#CACACA" />
-      <FontAwesome name="user" size={28} color="#CACACA" />
+      <TouchableOpacity onPress={() => navigation.navigate('Marketplace')}>
+        <MaterialCommunityIcons name="wallet" size={28} color={route.name === 'Marketplace' ? '#22DBBB' : "#CACACA"} />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('Share')}>
+        <MaterialCommunityIcons name="qrcode-scan" size={28} color={(route.name === 'Share' || route.name === 'ReceiveToken') ? '#22DBBB' : "#CACACA"}/>
+      </TouchableOpacity>
+      
+      <TouchableOpacity onPress={() => navigation.navigate('Explore')}>
+        <Image source={require('../../assets/logo.png')} style={styles.logo} />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('MyToken')}>
+        <FontAwesome5 name="map-marked-alt" size={28} color={route.name === 'MyToken' ? '#22DBBB' : "#CACACA"} />
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
+        <FontAwesome name="user" size={28} color={route.name === 'EditProfile' ? '#22DBBB' : "#CACACA"} />
+      </TouchableOpacity>
+
     </View>
   );
 }
@@ -25,15 +46,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 40,
     marginHorizontal: 10,
-    marginVertical: 4,
+    marginVertical: 8,
     paddingHorizontal: 12,
     height: 60,
-    // position: 'absolute',
-    // bottom: 0,
-    // width: '100%',
     marginLeft: 12,
-    // borderTopRightRadius: 20,
-    // borderTopLeftRadius: 20
   },
   logo: {
     width: 48,

@@ -1,7 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
 
-export default function CustomHeader({navigation, title}) {
+export default function CustomHeader({title}) {
+
+  const navigation = useNavigation();
 
   return (
     <View style={styles.viewContainer}>

@@ -1,8 +1,7 @@
-import React, { useMemo, useState } from "react";
+import React from "react";
 import { View, StyleSheet, Text, ScrollView, Image, TouchableOpacity, } from "react-native";
 import CustomHeader from '../Components/CustomHeader';
-import { useTheme } from "react-native-paper";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import CustomNavbar from "../Components/CustomNavbar";
 
 const TTTTT = [1, 2, 3, 4, 5]
 
@@ -67,11 +66,10 @@ const MarketplacePage = ({ navigation }) => {
               </Text>
             </View>
           </View>)}
-
-
         </View>
-
       </ScrollView>
+
+      <CustomNavbar navigation={navigation}/>
     </View>
   );
 };

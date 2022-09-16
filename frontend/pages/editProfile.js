@@ -12,7 +12,7 @@ import { useToast } from "react-native-toast-notifications";
 import { PROD, VERSION } from "../config/keys";
 import { ScrollView } from "react-native-gesture-handler";
 
-const CreateProfileScreen = ({ navigation }) => {
+const EditProfileScreen = ({ navigation }) => {
 
   const { colors } = useTheme();
   const { isAuthenticated, Moralis, authError, authenticate, isAuthenticating, logout } = useMoralis();
@@ -56,7 +56,7 @@ const CreateProfileScreen = ({ navigation }) => {
     <ScrollView style={styles.root}>
 
       <View style={styles.viewContainer}>
-        <Text style={{ color: '#000', fontSize: 25, fontWeight: '700' }}>{'Create Your Profile'}</Text>
+        <Text style={{ color: '#000', fontSize: 25, fontWeight: '700' }}>{'Edit Your Profile'}</Text>
 
         <Image source={require('../../assets/profile.png')} style={styles.logo} />
         <View style={{ flexDirection: 'row', marginTop: 5 }}>
@@ -73,6 +73,10 @@ const CreateProfileScreen = ({ navigation }) => {
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button} >
+            <Text style={{ color: '#92959d', fontSize: 16 }}>Email</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} >
             <Text style={{ color: '#92959d', fontSize: 16 }}>Number</Text>
           </TouchableOpacity>
 
@@ -80,21 +84,11 @@ const CreateProfileScreen = ({ navigation }) => {
             <Text style={{ color: '#92959d', fontSize: 16 }}>Country</Text>
           </TouchableOpacity>
 
-          <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20, }}>
-            <CheckBox
-              value={isSelected}
-              onValueChange={setSelection}
-              style={styles.checkbox}
-            />
-            <Text style={{ textAlign: 'center', color: '#92959d', fontSize: 12 }}>I agree to the terms and conditions of use</Text>
-
-          </View>
-
           <TouchableOpacity 
-            style={[styles.button, { backgroundColor: '#22DBBB' }]} 
+            style={[styles.button, { backgroundColor: '#000' }]} 
             onPress={()=> navigation.navigate('Explore')}  
           >
-            <Text style={{ color: '#fff', fontSize: 16 }}>Finish</Text>
+            <Text style={{ color: '#fff', fontSize: 16 }}>Save</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -158,4 +152,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CreateProfileScreen;
+export default EditProfileScreen;

@@ -21,10 +21,16 @@ import DetailGateScreen from "./pages/detailGate";
 import VideoDetailScreen from "./pages/videoDetail";
 import MyTokensScreen from "./pages/myTokens";
 import MyNFTScreen from "./pages/myNFTs";
+import CreateProfileScreen from "./pages/createProfile";
+import MarketplacePage from "./pages/marketplace";
+import EditProfileScreen from "./pages/editProfile";
+import ShareScreen from "./pages/share";
+import ReceiveTokenScreen from "./pages/receiveToken";
 
 import { Provider } from 'react-redux';
 import store from "./store/store";
 import { ToastProvider } from 'react-native-toast-notifications'
+import DetailNFTScreen from "./pages/detailNFT";
 const Moralis = require('moralis/react-native.js');
 const AsyncStorage = require('react-native').AsyncStorage;
 Moralis.setAsyncStorage(AsyncStorage);
@@ -36,16 +42,22 @@ const Stack = createStackNavigator();
 const ROUTES = [
   { name: 'SplashScreen', component: SplashScreen },
   { name: 'Auth', component: LoginScreen },
-  // { name: 'Home', component: HomeScreen },
-  { name: 'Home', component: MyTokensScreen },
-  { name: 'CreateNFT', component: CreateNFTScreen },
+  { name: 'Home', component: HomeScreen },
+  { name: 'CreateProfile', component: CreateProfileScreen },
+  { name: 'Explore', component: TabNFTAsset },
+  { name: 'Marketplace', component: MarketplacePage },
+  { name: 'MyToken', component: MyTokensScreen },
+  { name: 'EditProfile', component: EditProfileScreen },
+  { name: 'Share', component: ShareScreen },
+  { name: 'ReceiveToken', component: ReceiveTokenScreen },
+  { name: 'Detail', component: DetailNFTScreen },
+  
   { name: 'NFTDetail', component: NFTDetailScreen },
   { name: 'NFTOwner', component: NFTOwnerScreen },
   { name: 'CollectionDetail', component: DetailCollectionScreen },
   { name: 'CreateCollection', component: CreateCollectionScreen },
   { name: 'CreateBrand', component: CreateBrandScreen },
   { name: 'Collections', component: TabCollection },
-  { name: 'Explore', component: TabNFTAsset },
   { name: 'Profile', component: Profile },
   { name: 'Search', component: SearchScreen },
   { name: 'Scanner', component: ScannerScreen },

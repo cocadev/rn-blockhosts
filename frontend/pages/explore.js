@@ -1,12 +1,47 @@
-import React from "react";
-import { View, StyleSheet, Text, ScrollView, Image, TouchableOpacity, } from "react-native";
+import React, { useRef } from "react";
+import { View, StyleSheet, Text, ScrollView, Image, TouchableOpacity, Dimensions} from "react-native";
 import CustomHeader from '../Components/CustomHeader';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomNavbar from "../Components/CustomNavbar";
+import Carousel from 'react-native-snap-carousel';
 
 const TTTTT = [1, 2, 3, 4, 5]
 
 const TabNFTAsset = ({ navigation }) => {
+
+  const ref = useRef();
+  const screenWidth = Dimensions.get('window').width;
+
+  _renderItem = ({ item, index }) => {
+    return (
+      <View style={{ flexDirection: 'row', backgroundColor: '#1f7868', padding: 10, borderRadius: 25, marginTop: 12 }}>
+        <View style={{ padding: 8, backgroundColor: '#fff', borderRadius: 30, alignItems: 'center' }}>
+          <Image source={require('../../assets/nft.png')} style={{ width: 130, height: 150, borderRadius: 20 }} />
+          <TouchableOpacity style={{ backgroundColor: '#000', marginTop: 12, borderRadius: 20, alignItems: 'center', width: 70 }}>
+            <Text style={{ color: '#fff' }}>Buy</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1, marginLeft: 12 }}>
+          <TouchableOpacity style={{ backgroundColor: '#0d453c', padding: 12, borderRadius: 20, alignItems: 'center' }}>
+            <Text style={{ color: '#fff' }}>Cool Beer</Text>
+          </TouchableOpacity>
+          <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'center' }}>
+            <TouchableOpacity style={{ backgroundColor: '#0d453c', padding: 12, borderRadius: 12, alignItems: 'center', flex: 1 }}>
+              <Text style={{ color: '#fff', fontSize: 8 }}>Available</Text>
+              <Text style={{ color: '#fff', fontSize: 12 }}>900</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ backgroundColor: '#0d453c', padding: 12, borderRadius: 12, alignItems: 'center', marginLeft: 8, flex: 1 }}>
+              <Text style={{ color: '#fff', fontSize: 8 }}>Available</Text>
+              <Text style={{ color: '#fff', fontSize: 12 }}>900</Text>
+            </TouchableOpacity>
+          </View>
+          <Text style={{ color: '#fff', fontSize: 10, marginTop: 8 }}>
+            Sweet Mead is a limited edition APA available in only 3 locations world wide. eDrinks savings are 30% RRP
+          </Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.root}>
@@ -75,32 +110,13 @@ const TabNFTAsset = ({ navigation }) => {
 
           <Text style={{ fontSize: 20, fontWeight: '700', marginTop: 20 }}>Featured Drops</Text>
 
-          <View style={{ flexDirection: 'row', backgroundColor: '#1f7868', padding: 10, borderRadius: 25, marginTop: 12 }}>
-            <View style={{ padding: 8, backgroundColor: '#fff', borderRadius: 30, alignItems: 'center' }}>
-              <Image source={require('../../assets/nft.png')} style={{ width: 130, height: 150, borderRadius: 20 }} />
-              <TouchableOpacity style={{ backgroundColor: '#000', marginTop: 12, borderRadius: 20, alignItems: 'center', width: 70 }}>
-                <Text style={{ color: '#fff' }}>Buy</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{ flex: 1, marginLeft: 12 }}>
-              <TouchableOpacity style={{ backgroundColor: '#0d453c', padding: 12, borderRadius: 20, alignItems: 'center' }}>
-                <Text style={{ color: '#fff' }}>Cool Beer</Text>
-              </TouchableOpacity>
-              <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'center' }}>
-                <TouchableOpacity style={{ backgroundColor: '#0d453c', padding: 12, borderRadius: 12, alignItems: 'center', flex: 1 }}>
-                  <Text style={{ color: '#fff', fontSize: 8 }}>Available</Text>
-                  <Text style={{ color: '#fff', fontSize: 12 }}>900</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={{ backgroundColor: '#0d453c', padding: 12, borderRadius: 12, alignItems: 'center', marginLeft: 8, flex: 1 }}>
-                  <Text style={{ color: '#fff', fontSize: 8 }}>Available</Text>
-                  <Text style={{ color: '#fff', fontSize: 12 }}>900</Text>
-                </TouchableOpacity>
-              </View>
-              <Text style={{ color: '#fff', fontSize: 10, marginTop: 8 }}>
-                Sweet Mead is a limited edition APA available in only 3 locations world wide. eDrinks savings are 30% RRP
-              </Text>
-            </View>
-          </View>
+          <Carousel
+            ref={ref}
+            data={TTTTT}
+            renderItem={_renderItem}
+            sliderWidth={screenWidth - 20}
+            itemWidth={screenWidth - 30}
+          />
 
           <Text style={{ fontSize: 20, fontWeight: '700', marginTop: 20 }}>Activity</Text>
 

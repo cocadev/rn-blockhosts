@@ -26,6 +26,9 @@ import MarketplacePage from "./pages/marketplace";
 import EditProfileScreen from "./pages/editProfile";
 import ShareScreen from "./pages/share";
 import ReceiveTokenScreen from "./pages/receiveToken";
+import {TestScreen} from "./pages/test";
+
+
 
 import { Provider } from 'react-redux';
 import store from "./store/store";
@@ -43,7 +46,7 @@ const Stack = createStackNavigator();
 const ROUTES = [
   { name: 'SplashScreen', component: SplashScreen },
   { name: 'Auth', component: LoginScreen },
-  { name: 'Home', component: ExploreScreen },
+  // { name: 'Home', component: ExploreScreen },
   { name: 'CreateProfile', component: CreateProfileScreen },
   { name: 'Marketplace', component: MarketplacePage },
   { name: 'MyToken', component: MyTokensScreen },
@@ -51,6 +54,7 @@ const ROUTES = [
   { name: 'Share', component: ShareScreen },
   { name: 'ReceiveToken', component: ReceiveTokenScreen },
   { name: 'Detail', component: DetailNFTScreen },
+  { name: 'Home', component: TestScreen },
   
   { name: 'NFTDetail', component: NFTDetailScreen },
   { name: 'NFTOwner', component: NFTOwnerScreen },

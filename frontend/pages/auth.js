@@ -8,8 +8,9 @@ import { useGetChainId } from "../hooks/useGetChainId";
 import { useToast } from "react-native-toast-notifications";
 import { PROD, } from "../config/keys";
 import { useWalletConnect } from "../WalletConnect";
+import { useNavigation } from "@react-navigation/native";
 
-const HomeScreen = ({ navigation }) => {
+const AuthScreen = () => {
 
   const {
     authenticate,
@@ -25,6 +26,7 @@ const HomeScreen = ({ navigation }) => {
   const { chainId, setChainId } = useGetChainId();
   const Web3Api = useMoralisWeb3Api();
   const connector = useWalletConnect();
+  const navigation = useNavigation();
 
   const toast = useToast();
 
@@ -40,12 +42,18 @@ const HomeScreen = ({ navigation }) => {
           setVisible(true);
         } else {
           if (isAuthenticated) {
-            navigation.navigate("CreateProfile");
+            navigation.navigate("Home");
           }
         }
       })
       .catch(() => { });
   };
+
+  useEffect(() => {
+    if(isAuthenticated){
+      navigation.navigate("Home");
+    }
+  }, [isAuthenticated]);
 
   return (
     <View style={styles.root}>
@@ -127,4 +135,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default HomeScreen;
+export default AuthScreen;

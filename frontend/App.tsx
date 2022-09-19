@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { LogBox } from "react-native";
 import SplashScreen from "./pages/splash";
-import HomeScreen from "./pages/home";
+import HomeScreen from "./pages/auth";
 import LoginScreen from "./pages/login";
 import CreateNFTScreen from "./pages/createNFT";
 import NFTDetailScreen from "./pages/detailNFT";
@@ -31,6 +31,7 @@ import { Provider } from 'react-redux';
 import store from "./store/store";
 import { ToastProvider } from 'react-native-toast-notifications'
 import DetailNFTScreen from "./pages/detailNFT";
+import ExploreScreen from "./pages/explore";
 const Moralis = require('moralis/react-native.js');
 const AsyncStorage = require('react-native').AsyncStorage;
 Moralis.setAsyncStorage(AsyncStorage);
@@ -42,9 +43,8 @@ const Stack = createStackNavigator();
 const ROUTES = [
   { name: 'SplashScreen', component: SplashScreen },
   { name: 'Auth', component: LoginScreen },
-  { name: 'Home', component: HomeScreen },
+  { name: 'Home', component: ExploreScreen },
   { name: 'CreateProfile', component: CreateProfileScreen },
-  { name: 'Explore', component: TabNFTAsset },
   { name: 'Marketplace', component: MarketplacePage },
   { name: 'MyToken', component: MyTokensScreen },
   { name: 'EditProfile', component: EditProfileScreen },

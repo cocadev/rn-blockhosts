@@ -7,7 +7,7 @@ import Carousel from 'react-native-snap-carousel';
 
 const TTTTT = [1, 2, 3, 4, 5]
 
-const TabNFTAsset = ({ navigation }) => {
+const ExploreScreen = ({ navigation }) => {
 
   const ref = useRef();
   const screenWidth = Dimensions.get('window').width;
@@ -168,4 +168,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default TabNFTAsset;
+export default ExploreScreen;

@@ -19,9 +19,11 @@ const ShareScreen = ({ route, navigation }) => {
 
         <CustomHeader navigation={navigation} title={'My Tokens'} />
 
-        <Image source={require('../../assets/qr.png')} style={styles.banner} />
+        <View style={{alignItems: 'center'}}>
+          <Image source={require('../../assets/qr.png')} style={styles.banner} />
+        </View>
 
-        <View >
+        <View>
           <Text style={styles.t1}>Staff Scan to Redeeem</Text>
           <Text style={styles.t2}>
             The standard Lorem Ipsum passage, used since the 1500s</Text>
@@ -74,10 +76,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#000'
   },
   banner: {
-    width: screenWidth - 24,
+    width: screenWidth - 74,
     marginTop: 20,
     borderRadius: 15,
-    height: 330,
+    height: screenWidth - 74,
     alignItems: 'center',
     backgroundColor: '#000',
   },

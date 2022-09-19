@@ -1,34 +1,37 @@
-import React, { useEffect} from "react";
-import { StyleSheet, Text, Image, View, TouchableOpacity, ImageBackground,  } from 'react-native';
+import React, { useEffect } from "react";
+import { StyleSheet, Text, Image, View, TouchableOpacity, ImageBackground, } from 'react-native';
 import { useMoralis, useMoralisCloudFunction, useMoralisWeb3Api } from "react-moralis";
 import { useDispatch, useSelector } from "react-redux";
 import { onGetData } from "../store/actions/nfts/nfts";
 import { getUserData } from "../store/actions/users/users";
 import { useGetChainId } from "../hooks/useGetChainId";
 import { useToast } from "react-native-toast-notifications";
-import { PROD,  } from "../config/keys";
+import { PROD, } from "../config/keys";
+import { useWalletConnect } from "../WalletConnect";
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({ navigation }) => {
 
-  const { Moralis, logout, authenticate } = useMoralis();
+  const {
+    authenticate,
+    authError,
+    isAuthenticating,
+    isAuthenticated,
+    logout,
+    Moralis,
+  } = useMoralis();
   const { nfts } = useSelector(state => state.nfts)
   const { users } = useSelector(state => state.users)
   const dispatch = useDispatch();
   const { chainId, setChainId } = useGetChainId();
   const Web3Api = useMoralisWeb3Api();
+  const connector = useWalletConnect();
 
   const toast = useToast();
-  const { data: userData } = useMoralisCloudFunction('loadUsers');
 
   const handleCryptoLogin = () => {
 
-    navigation.navigate("CreateProfile");
-    return false;
-
     authenticate({
       connector,
-      // provider: "walletconnect",
-      // mobileLinks: ["metamask"],
       signingMessage: "Metasalt authentication",
     })
       .then((res) => {
@@ -37,7 +40,7 @@ const HomeScreen = ({navigation}) => {
           setVisible(true);
         } else {
           if (isAuthenticated) {
-            // navigation.navigate("Home");
+            navigation.navigate("CreateProfile");
           }
         }
       })
@@ -49,20 +52,20 @@ const HomeScreen = ({navigation}) => {
 
       <View style={styles.viewContainer}>
         <Image source={require('../../assets/logo.png')} style={styles.logo} />
-        <Text style={{color: '#fff', fontSize: 25, marginTop: 12}}>{'BlackHosts Wallet'}</Text>
-        <Text style={{color: '#fff', fontSize: 15, textAlign: 'center', marginTop: 18, maxWidth: 240}}>{'Buy, Store and Redeem Hospitality Tokens Easily'}</Text>
+        <Text style={{ color: '#fff', fontSize: 25, marginTop: 12 }}>{'BlackHosts Wallet'}</Text>
+        <Text style={{ color: '#fff', fontSize: 15, textAlign: 'center', marginTop: 18, maxWidth: 240 }}>{'Buy, Store and Redeem Hospitality Tokens Easily'}</Text>
       </View>
 
-      <View style={{ justifyContent: 'center', alignItems: 'center'}}>
-        <TouchableOpacity 
-          style={[styles.button, { backgroundColor: '#fff'}]} 
-          onPress={()=>navigation.navigate("Explore")}
+      <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: '#fff' }]}
+          onPress={() => navigation.navigate("Explore")}
         >
-          <Text style={{color: '#000', fontSize: 16}}>Login</Text>
+          <Text style={{ color: '#000', fontSize: 16 }}>Login</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={handleCryptoLogin}>
-          <Text style={{color: '#fff', fontSize: 16}}>Connect External Wallet</Text>
+          <Text style={{ color: '#fff', fontSize: 16 }}>Connect External Wallet</Text>
         </TouchableOpacity>
       </View>
 
@@ -114,12 +117,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   button: {
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    paddingVertical: 20, 
-    minWidth: 250, 
-    backgroundColor: '#0c4d41', 
-    borderRadius: 12, 
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+    minWidth: 250,
+    backgroundColor: '#0c4d41',
+    borderRadius: 12,
     marginTop: 20
   }
 });

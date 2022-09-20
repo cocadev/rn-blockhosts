@@ -1,12 +1,12 @@
 {
   "expo": {
     "ios": {
-      "bundleIdentifier": "com.myreactnativedapp"
+      "bundleIdentifier": "com.blockhosts"
     },
     "android": {
-      "package": "com.myreactnativedapp"
+      "package": "com.blockhosts"
     },
-    "scheme": "myreactnativedapp",
+    "scheme": "com.blockhosts",
     "icon": "assets/image/app-icon.png",
     "splash": {
       "image": "assets/image/app-icon.png",

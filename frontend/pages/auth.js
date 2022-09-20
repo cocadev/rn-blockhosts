@@ -67,7 +67,7 @@ const AuthScreen = () => {
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
         <TouchableOpacity
           style={[styles.button, { backgroundColor: '#fff' }]}
-          onPress={() => navigation.navigate("Explore")}
+          onPress={() => navigation.navigate("Web3Auth")}
         >
           <Text style={{ color: '#000', fontSize: 16 }}>Login</Text>
         </TouchableOpacity>

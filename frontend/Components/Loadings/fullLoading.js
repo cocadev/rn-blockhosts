@@ -39,7 +39,7 @@ export default function FullLoading({}) {
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
-    // backgroundColor: 'rgba(0,0,0,0.2)'
+    backgroundColor: 'rgba(0,0,0,0.2)'
   },
   viewContainer: {
     flexDirection: "row",
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     // height: 70,
     paddingHorizontal: 12,
     flex: 1,
-    // backgroundColor: 'rgba(0,0,110,0.9)',
+    backgroundColor: 'rgba(0,0,0,0.2)'
     // opacity: 0.2
   },
   modalView: {

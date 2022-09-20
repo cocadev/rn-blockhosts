@@ -1,77 +1,57 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, Image, View, TouchableOpacity, CheckBox, TextInput, } from 'react-native';
-import LinearButton from "../Components/LinearButton";
-import { useMoralis, useMoralisCloudFunction, useMoralisWeb3Api } from "react-moralis";
-import { useDispatch, useSelector } from "react-redux";
-import { onGetData } from "../store/actions/nfts/nfts";
-import { getUserData } from "../store/actions/users/users";
-import { useGetChainId } from "../hooks/useGetChainId";
-import { useWalletConnect } from "../WalletConnect";
-import { Button, Paragraph, Dialog, Portal, Provider, ActivityIndicator, useTheme } from "react-native-paper";
-import { useToast } from "react-native-toast-notifications";
-import { PROD, VERSION } from "../config/keys";
+import { StyleSheet, Text, Image, View, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
+import { useMoralis, useMoralisCloudFunction } from "react-moralis";
+import { useTheme } from "react-native-paper";
 import { ScrollView } from "react-native-gesture-handler";
 import { useMoralisDapp } from "../providers/MoralisDappProvider/MoralisDappProvider";
+import  FullLoading from '../Components/Loadings/fullLoading'
 
 const EditProfileScreen = ({ navigation }) => {
 
-  const { isAuthenticated, logout, setUserData, Moralis } = useMoralis();
+  const { isAuthenticated, logout, setUserData, Moralis, user } = useMoralis();
   const { walletAddress, chainId } = useMoralisDapp();
-  const [title, onChangeTitle] = useState();
-  const [email, onChangeEmail] = useState();
-  const [bio, onChangeBio] = useState();
-  const { colors } = useTheme();
-
-  const [isPicker, setIsPicker] = useState(0);
-  const [fileBanner, setFileBanner] = useState();
+  const [title, setTitle] = useState();
+  const [email, setEmail] = useState();
   const [fileAvatar, setFileAvatar] = useState();
-  const [isSuccessModal, setIsSuccessModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { data } = useMoralisCloudFunction('loadUsers');
-  const myInfos = data?.filter(item => item?.attributes?.ethAddress === walletAddress);
-  const myInfo = myInfos && myInfos[0];
-
   useEffect(() => {
-    if(myInfo){
-      onChangeTitle(myInfo?.attributes?.username)
-      onChangeEmail(myInfo?.attributes?.email)
-      onChangeBio(myInfo?.attributes?.bio)
-      setFileAvatar(myInfo?.attributes?.avatar)
-      setFileBanner(myInfo?.attributes?.banner)
+    if (user) {
+      setTitle(user?.attributes?.name)
+      setEmail(user?.attributes?.email)
+      setFileAvatar(user?.attributes?.profileImage)
     }
-  } , [myInfo])
+  }, [user])
 
   const onSaveProfile = async () => {
 
     setIsLoading(true);
-    const avatar = await uploadImage(fileAvatar);
-    const banner = await uploadImage(fileBanner);
+    let avatar = fileAvatar;
+    if(fileAvatar.includes('/data:image')){
+      avatar = await uploadImage(fileAvatar);
+    }
     let request = {
-      username: title,
-      bio,
+      name: title,
       email,
     }
-    if(fileAvatar){
-      request.avatar = avatar
-    }
-
-    if(fileBanner){
-      request.banner = banner
+    if (fileAvatar) {
+      request.profileImage = avatar
     }
 
     await setUserData(request).then(() => {
       setIsLoading(false);
-      setIsSuccessModal(true);
-    }, (error) => {  
+      console.log('success!')
+    }, (error) => {
       setIsLoading(false);
+      console.log('error!', error)
+
     });
   }
 
   const logoutUser = () => {
     if (isAuthenticated) {
       logout();
-      navigation.navigate('Home')
+      navigation.navigate('auth')
     }
   };
 
@@ -90,11 +70,7 @@ const EditProfileScreen = ({ navigation }) => {
         })
 
         if (image.base64) {
-          if(number === 1){
-            setFileBanner(`data:image/jpg;base64,${image.base64}`);
-          }else{
-            setFileAvatar(`data:image/jpg;base64,${image.base64}`);
-          }
+          setFileAvatar(`data:image/jpg;base64,${image.base64}`);
         }
       }
     }
@@ -110,17 +86,13 @@ const EditProfileScreen = ({ navigation }) => {
     });
 
     if (result.base64) {
-      if(number === 1){
-        setFileBanner(`data:image/jpg;base64,${result.base64}`);
-      }else{
-        setFileAvatar(`data:image/jpg;base64,${result.base64}`);
-      }
+      setFileAvatar(`data:image/jpg;base64,${result.base64}`);
     }
   };
 
   const uploadImage = async (myFile) => {
     const nowTime = new Date().getTime();
-    var nftImageFile = new Moralis.File(nowTime, {base64: myFile});
+    var nftImageFile = new Moralis.File(nowTime, { base64: myFile });
     await nftImageFile.saveIPFS();
     return nftImageFile.ipfs();
   };
@@ -128,31 +100,41 @@ const EditProfileScreen = ({ navigation }) => {
   return (
     <ScrollView style={styles.root}>
 
+      {isLoading && <FullLoading />}
+
       <View style={styles.viewContainer}>
         <Text style={{ color: '#000', fontSize: 25, fontWeight: '700' }}>{'Edit Your Profile'}</Text>
 
-        <Image source={require('../../assets/profile.png')} style={styles.logo} />
+        <Image source={fileAvatar ? { uri: fileAvatar } : require('../../assets/profile.png')} style={styles.logo} />
         <View style={{ flexDirection: 'row', marginTop: 5 }}>
         </View>
       </View>
 
-      <Text style={{ textAlign: 'center', marginTop: 12, color: '#3C404B' }}>0xCC00...b8E50</Text>
+      {/* <Text style={{ textAlign: 'center', marginTop: 12, color: '#3C404B' }}>0xCC00...b8E50</Text> */}
 
       <View style={{ marginHorizontal: 30, marginVertical: 20 }}>
 
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <TouchableOpacity style={styles.button} >
-            <TextInput style={{ color: '#000', fontSize: 16 }} 
+          <View style={styles.button}>
+            <TextInput style={{ color: '#000', fontSize: 16 }}
               placeholder={'Name'}
               placeholderTextColor={'#92959d'}
+              value={title}
+              onChangeText={(e)=>setTitle(e)}
             />
-          </TouchableOpacity>
+          </View>
 
-          <TouchableOpacity style={styles.button} >
-            <Text style={{ color: '#92959d', fontSize: 16 }}>Email</Text>
-          </TouchableOpacity>
+          <View style={styles.button} >
+            <TextInput style={{ color: '#000', fontSize: 16 }}
+              placeholder={'Email'}
+              placeholderTextColor={'#92959d'}
+              value={email}
+              onChangeText={(e)=>setEmail(e)}
+              editable={false}
+            />
+          </View>
 
-          <TouchableOpacity style={styles.button} >
+          <TouchableOpacity style={styles.button}>
             <Text style={{ color: '#92959d', fontSize: 16 }}>Number</Text>
           </TouchableOpacity>
 
@@ -160,16 +142,16 @@ const EditProfileScreen = ({ navigation }) => {
             <Text style={{ color: '#92959d', fontSize: 16 }}>Country</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity 
-            style={[styles.button, { backgroundColor: '#000' }]} 
-            onPress={()=> navigation.navigate('Explore')}  
+          <TouchableOpacity
+            style={[styles.button, { backgroundColor: '#000' }]}
+            onPress={()=> onSaveProfile()}
           >
             <Text style={{ color: '#fff', fontSize: 16 }}>Save</Text>
           </TouchableOpacity>
 
-            <TouchableOpacity style={styles.btnLog} onPress={logoutUser}>
-              <Text style={{ color: '#fff'}}>Log out</Text>
-            </TouchableOpacity>
+          <TouchableOpacity style={styles.btnLog} onPress={()=> logoutUser()}>
+            <Text style={{ color: '#fff' }}>Log out</Text>
+          </TouchableOpacity>
 
         </View>
       </View>

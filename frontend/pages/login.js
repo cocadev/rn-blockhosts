@@ -16,13 +16,25 @@ import {
   ActivityIndicator,
   useTheme,
 } from "react-native-paper";
+import Web3Auth, { LOGIN_PROVIDER, OPENLOGIN_NETWORK } from "@web3auth/react-native-sdk";
+import Constants, { AppOwnership } from "expo-constants";
+import * as Linking from "expo-linking";
+import * as WebBrowser from "expo-web-browser";
+import { Buffer } from "buffer";
 
+global.Buffer = global.Buffer || Buffer;
+
+const scheme = "com.blockhosts";
 import {
   useMoralis,
 } from "react-moralis";
 import { useWalletConnect } from "../WalletConnect";
 import LinearButton from "../Components/LinearButton";
 
+const resolvedRedirectUrl =
+  Constants.appOwnership == AppOwnership.Expo || Constants.appOwnership == AppOwnership.Guest
+    ? Linking.createURL("auth", {})
+    : Linking.createURL("auth", { scheme: scheme });
 
 const LoginScreen = ({ navigation }) => {
 
@@ -63,6 +75,34 @@ const LoginScreen = ({ navigation }) => {
         }
       })
       .catch(() => {});
+  };
+
+  const login = async () => {
+    try {
+      const web3auth = new Web3Auth(WebBrowser, {
+        clientId: "BMiUphwanlsWbNylYsUB8_jIX9klzgNEJk2oTUauTZDTyQJsuZxH1U8LkF31Hl7maIlJeq6I6qdK-wiuLGCVP5Y",
+        network: OPENLOGIN_NETWORK.TESTNET,
+        whiteLabel: {
+          name: "BlockHosts",
+          logoLight: "https://web3auth.io/images/logo-light.png",
+          logoDark: "https://web3auth.io/images/logo-dark.png",
+          defaultLanguage: "en",
+          dark: true,
+          theme: {
+            primary: "#cddc39",
+          },
+        },
+      });
+      const state = await web3auth.login({
+        loginProvider: LOGIN_PROVIDER.GOOGLE,
+        redirectUrl: resolvedRedirectUrl,
+      });
+      setKey(state.privKey || "no key");
+      setUserInfo(state);
+    } catch (e) {
+      console.error(e);
+      setErrorMsg(String(e));
+    }
   };
 
   useEffect(() => {

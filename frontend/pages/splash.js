@@ -17,7 +17,7 @@ const SplashScreen = ({ navigation }) => {
       //If not then send for Authentication
       //else send to Home Screen
       AsyncStorage.getItem("user_id").then((value) =>
-        navigation.replace("Auth")
+        navigation.replace("auth")
       );
     }, 2000);
   }, []);
@@ -29,12 +29,7 @@ const SplashScreen = ({ navigation }) => {
         style={{ width: "90%", resizeMode: "contain", margin: 30 }}
       /> */}
       <LottieView source={Animation} loop autoplay />
-      <ActivityIndicator
-        animating={animating}
-        color="#FFFFFF"
-        size="large"
-        style={styles.activityIndicator}
-      />
+
     </View>
   );
 };

@@ -26,7 +26,7 @@ import MarketplacePage from "./pages/marketplace";
 import EditProfileScreen from "./pages/editProfile";
 import ShareScreen from "./pages/share";
 import ReceiveTokenScreen from "./pages/receiveToken";
-import {TestScreen} from "./pages/test";
+import {TestScreen, Web3AuthScreen} from "./pages/web3Auth";
 
 
 
@@ -35,6 +35,7 @@ import store from "./store/store";
 import { ToastProvider } from 'react-native-toast-notifications'
 import DetailNFTScreen from "./pages/detailNFT";
 import ExploreScreen from "./pages/explore";
+import AuthScreen from "./pages/auth";
 const Moralis = require('moralis/react-native.js');
 const AsyncStorage = require('react-native').AsyncStorage;
 Moralis.setAsyncStorage(AsyncStorage);
@@ -45,8 +46,9 @@ const Stack = createStackNavigator();
 
 const ROUTES = [
   { name: 'SplashScreen', component: SplashScreen },
-  { name: 'Auth', component: LoginScreen },
-  // { name: 'Home', component: ExploreScreen },
+  { name: 'auth', component: AuthScreen },
+  { name: 'Home', component: ExploreScreen },
+
   { name: 'CreateProfile', component: CreateProfileScreen },
   { name: 'Marketplace', component: MarketplacePage },
   { name: 'MyToken', component: MyTokensScreen },
@@ -54,7 +56,7 @@ const ROUTES = [
   { name: 'Share', component: ShareScreen },
   { name: 'ReceiveToken', component: ReceiveTokenScreen },
   { name: 'Detail', component: DetailNFTScreen },
-  { name: 'Home', component: TestScreen },
+  { name: 'Web3Auth', component: Web3AuthScreen },
   
   { name: 'NFTDetail', component: NFTDetailScreen },
   { name: 'NFTOwner', component: NFTOwnerScreen },
@@ -78,7 +80,7 @@ function App(): JSX.Element {
     <Provider store={store} >
       <ToastProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home">
+          <Stack.Navigator initialRouteName="SplashScreen">
 
             {
               ROUTES.map((item, index) => <Stack.Screen

@@ -5,12 +5,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { enableViaWalletConnect } from "./Moralis/enableViaWalletConnect";
 import WalletConnectProvider, { WalletConnectProviderProps } from "./WalletConnect";
 import { Platform } from "react-native";
-import Qrcode from "./Qrcode";
 import { expo } from "../app.json";
 import { MoralisDappProvider } from "./providers/MoralisDappProvider/MoralisDappProvider";
-import { ApplicationProvider, Layout, Text } from "@ui-kitten/components";
+import { ApplicationProvider } from "@ui-kitten/components";
 import * as eva from "@eva-design/eva";
-import { MORALIS_APPID_MAIN, MORALIS_APPID_TEST, MORALIS_SERVER_URL_MAIN, MORALIS_SERVER_URL_TEST, PROD } from "./config/keys";
 
 interface ProvidersProps {
   readonly children: JSX.Element;

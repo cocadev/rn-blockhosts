@@ -1,56 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, Image, View, TouchableOpacity, CheckBox, } from 'react-native';
-import LinearButton from "../Components/LinearButton";
-import { useMoralis, useMoralisCloudFunction, useMoralisWeb3Api } from "react-moralis";
-import { useDispatch, useSelector } from "react-redux";
-import { onGetData } from "../store/actions/nfts/nfts";
-import { getUserData } from "../store/actions/users/users";
-import { useGetChainId } from "../hooks/useGetChainId";
-import { useWalletConnect } from "../WalletConnect";
-import { Button, Paragraph, Dialog, Portal, Provider, ActivityIndicator, useTheme } from "react-native-paper";
-import { useToast } from "react-native-toast-notifications";
-import { PROD, VERSION } from "../config/keys";
 import { ScrollView } from "react-native-gesture-handler";
 
 const CreateProfileScreen = ({ navigation }) => {
 
-  const { colors } = useTheme();
-  const { isAuthenticated, Moralis, authError, authenticate, isAuthenticating, logout } = useMoralis();
-  const { nfts } = useSelector(state => state.nfts)
-  const { users } = useSelector(state => state.users)
-  const dispatch = useDispatch();
-  const { chainId, setChainId } = useGetChainId();
-  const Web3Api = useMoralisWeb3Api();
-  const connector = useWalletConnect();
-  const [visible, setVisible] = useState(false);
-  const toast = useToast();
-  const { data: userData } = useMoralisCloudFunction('loadUsers');
   const [isSelected, setSelection] = useState(false);
-
-  const handleCryptoLogin = () => {
-
-    authenticate({
-      connector,
-      // provider: "walletconnect",
-      // mobileLinks: ["metamask"],
-      signingMessage: "Metasalt authentication",
-    })
-      .then((res) => {
-
-        if (authError) {
-          setVisible(true);
-        } else {
-          if (isAuthenticated) {
-            // navigation.navigate("Home");
-          }
-        }
-      })
-      .catch(() => { });
-  };
-
-  const onNavigate = (e) => {
-    navigation.navigate(e)
-  }
 
   return (
     <ScrollView style={styles.root}>

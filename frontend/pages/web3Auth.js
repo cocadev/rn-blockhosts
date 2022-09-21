@@ -31,13 +31,12 @@ const REQUEST = {
   },
 }
 
-export const Web3AuthScreen = ({ navigation }) => {
+export const Web3AuthScreen = ({  }) => {
 
-  const [key, setKey] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
   const [email, onChangeEmail] = useState();
 
-  const { login, Moralis, user, isAuthenticated } = useMoralis();
+  const { login, Moralis,  } = useMoralis();
 
   const loginGoogle = async () => {
 

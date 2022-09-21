@@ -1,9 +1,6 @@
 import React, { useEffect } from "react";
 import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
-import { useMoralis, useMoralisWeb3Api } from "react-moralis";
-import { useDispatch, useSelector } from "react-redux";
-import { useGetChainId } from "../hooks/useGetChainId";
-import { useToast } from "react-native-toast-notifications";
+import { useMoralis } from "react-moralis";
 import { useWalletConnect } from "../WalletConnect";
 import { useNavigation } from "@react-navigation/native";
 
@@ -12,20 +9,10 @@ const AuthScreen = () => {
   const {
     authenticate,
     authError,
-    isAuthenticating,
     isAuthenticated,
-    logout,
-    Moralis,
   } = useMoralis();
-  const { nfts } = useSelector(state => state.nfts)
-  const { users } = useSelector(state => state.users)
-  const dispatch = useDispatch();
-  const { chainId, setChainId } = useGetChainId();
-  const Web3Api = useMoralisWeb3Api();
   const connector = useWalletConnect();
   const navigation = useNavigation();
-
-  const toast = useToast();
 
   const handleCryptoLogin = () => {
 
@@ -40,6 +27,7 @@ const AuthScreen = () => {
 
           // setVisible(true);
         } else {
+          console.log('isAuthenticated', isAuthenticated)
           if (isAuthenticated) {
             navigation.navigate("Home");
           }

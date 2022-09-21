@@ -11,8 +11,6 @@ import EditProfileScreen from "./pages/editProfile";
 import ShareScreen from "./pages/share";
 import ReceiveTokenScreen from "./pages/receiveToken";
 import {Web3AuthScreen} from "./pages/web3Auth";
-import { Provider } from 'react-redux';
-import store from "./store/store";
 import { ToastProvider } from 'react-native-toast-notifications'
 import DetailNFTScreen from "./pages/detailNFT";
 import ExploreScreen from "./pages/explore";
@@ -38,13 +36,11 @@ const ROUTES = [
   { name: 'ReceiveToken', component: ReceiveTokenScreen },
   { name: 'Detail', component: DetailNFTScreen },
   { name: 'NFTDetail', component: NFTDetailScreen },
-
 ]
 
 function App(): JSX.Element {
 
   return (
-    <Provider store={store} >
       <ToastProvider>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="SplashScreen">
@@ -61,7 +57,6 @@ function App(): JSX.Element {
           </Stack.Navigator>
         </NavigationContainer>
         </ToastProvider>
-    </Provider>
   );
 }
 

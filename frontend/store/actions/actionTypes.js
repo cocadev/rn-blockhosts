@@ -1,8 +1,0 @@
-
-export const GET_NFT721_DATA = 'GET_NFT721_DATA';
-export const GET_NFT1155_DATA = 'GET_NFT1155_DATA';
-export const UPDATE_IS_LOADING = 'UPDATE_IS_LOADING';
-
-export const GET_USER_DATA = 'GET_USER_DATA';
-export const GET_MAGIC_DATA = 'GET_MAGIC_DATA';
-export const LOG_OUT_MAGIC_DATA = 'LOG_OUT_MAGIC_DATA';

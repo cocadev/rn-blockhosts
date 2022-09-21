@@ -1,43 +1,7 @@
 
-export const MORALIS_APPID_TEST = 'DbGCZFQGiRXLLtygrLNdJDz6W8eo8vM671Sp45LP' // testnet
-export const MORALIS_SERVER_URL_TEST = 'https://leubffeoop6q.usemoralis.com:2053/server' // testnet
-export const MORALIS_MASTER_KEY = '';
-
-export const MORALIS_APPID_MAIN = 'Xf05U8hPwtIrSRIXFZ94crY8YqvFe399QPyqUUSd' // mainnet
-export const MORALIS_SERVER_URL_MAIN = 'https://pbrfe2s08pft.usemoralis.com:2053/server' //mainnet
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-export const MUMBAI_ERC20_ADDRESS = '0x9459c63D1C7d1A384a603Fddd54c435572Fa2DFE' // 6/12
-export const MUMBAI_MINT721_ADDRESS = '0xe5522e8157D9A787fDfc9065dEEC596F8A9d42D9' // 6/12
-export const MUMBAI_MINT1155_ADDRESS = '0xDC8A7C7700b5f0c8a360d8796d481ECCFAAF59b6' // 6/12
-export const MUMBAI_MARKETPLACE_ADDRESS = '0xD1787f89e9FB5449AF30cD01e6aDC3b9b0F568aD' // 6/12
-
-export const RINKEYBY_ERC20_ADDRESS = '0x6EE5D6c66c68D3710DE437CA1Fb901766093ECa0' // 6/21
-export const RINKEYBY_MINT721_ADDRESS = '0xEe12F54351441Da466a5D5B7D0e04c304170206e' // 6/21
-export const RINKEYBY_MINT1155_ADDRESS = '0xeaC85a9151dB3875041711d39c0561EdF88D2F30' // 6/21
-export const RINKEYBY_MARKETPLACE_ADDRESS = '0xa579195E19fa8D11781Ef0e9A99e29E0386E03d6' // 6/21
-
-export const BSCT_ERC20_ADDRESS = '0x547395645C7DbCab62e22b403aAB9392fAa28ADB' // 6/21
-export const BSCT_MINT721_ADDRESS = '0x9A6EbbB24D662557FCd965618b27fDc8188331Cb' // 6/21
-export const BSCT_MINT1155_ADDRESS = '0x8c9098822E0Ad0a258598bd26c6Fe6B8cDA1d8bE' // 6/21
-export const BSCT_MARKETPLACE_ADDRESS = '0x8E84f74289419def3CE022060F68C1a51D45B3BC' // 6/21
-
-export const ROPSTEN_ERC20_ADDRESS = '0xf8f3bc18bee85D3459ca2dB6505C599F60939e62' // 8/31
-export const ROPSTEN_MINT721_ADDRESS = '0xf79A52F50d3abF4ff33F03B93e208C4d05685357' // 8/31
-export const ROPSTEN_MINT1155_ADDRESS = '0x84e59189B4c7d391B33013a8631d14391Fa0EefF' // 8/31
-export const ROPSTEN_MARKETPLACE_ADDRESS = '0x846284843e7A0C330410202062e7b06Eb5fF8f44' // 8/31
-
-export const MAIN_ERC20_ADDRESS = '0x638583Eae7197a4D5cb2833B3c5556732eD09E49' // 7/20
-export const MAIN_MINT721_ADDRESS = '0x0b9887B8d5281C457e7EfD492A951Ea0C9Be5ed4' // 7/20
-export const MAIN_MINT1155_ADDRESS = '0xd398A9390C3D35825dA3ACa114e8c387DDef5ecB' // 7/20
-export const MAIN_MARKETPLACE_ADDRESS = '0x2A90147BF1eB707321BcBa0F39b2D7e3768968c7' // 7/20
 
 export const DEMO_AVATAR = 'https://www.htmlcsscolor.com/preview/gallery/141414.png';
 export const DEMO_BACKGROUND = 'https://www.htmlcsscolor.com/preview/gallery/141414.png';
-
-export const BACKEND_API = 'https://cibir4rmol.execute-api.us-east-1.amazonaws.com/dev/assets/'
 
 export const PROD = false;
 export const VERSION = "v1.3";

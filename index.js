@@ -7,6 +7,8 @@
 // this will help persist a known template for future migrations.
 
 /* dapp-begin */
+import 'react-native-get-random-values';
+
 const { Platform, LogBox } = require("react-native");
 
 if (Platform.OS !== "web") {

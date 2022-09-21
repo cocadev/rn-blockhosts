@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, Image, View, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
-import { useMoralis, useMoralisCloudFunction } from "react-moralis";
-import { useTheme } from "react-native-paper";
+import { StyleSheet, Text, Image, View, TouchableOpacity, TextInput } from 'react-native';
+import { useMoralis } from "react-moralis";
 import { ScrollView } from "react-native-gesture-handler";
 import { useMoralisDapp } from "../providers/MoralisDappProvider/MoralisDappProvider";
-import  FullLoading from '../Components/Loadings/fullLoading'
+import FullLoading from '../Components/Loadings/fullLoading';
+import UtilService from '../utils/utilService'
 
 const EditProfileScreen = ({ navigation }) => {
 
@@ -14,6 +14,8 @@ const EditProfileScreen = ({ navigation }) => {
   const [email, setEmail] = useState();
   const [fileAvatar, setFileAvatar] = useState();
   const [isLoading, setIsLoading] = useState(false);
+
+  console.log('user', user)
 
   useEffect(() => {
     if (user) {
@@ -27,9 +29,11 @@ const EditProfileScreen = ({ navigation }) => {
 
     setIsLoading(true);
     let avatar = fileAvatar;
-    if(fileAvatar.includes('/data:image')){
+    if (fileAvatar?.includes('/data:image')) {
       avatar = await uploadImage(fileAvatar);
     }
+    console.log('avatar:', avatar)
+
     let request = {
       name: title,
       email,
@@ -37,6 +41,7 @@ const EditProfileScreen = ({ navigation }) => {
     if (fileAvatar) {
       request.profileImage = avatar
     }
+    console.log('request:', request)
 
     await setUserData(request).then(() => {
       setIsLoading(false);
@@ -44,8 +49,8 @@ const EditProfileScreen = ({ navigation }) => {
     }, (error) => {
       setIsLoading(false);
       console.log('error!', error)
-
     });
+    setIsLoading(false);
   }
 
   const logoutUser = () => {
@@ -100,7 +105,10 @@ const EditProfileScreen = ({ navigation }) => {
   return (
     <ScrollView style={styles.root}>
 
-      {isLoading && <FullLoading />}
+      {isLoading &&
+        <TouchableOpacity onPress={() => setIsLoading(false)}>
+          <FullLoading />
+        </TouchableOpacity>}
 
       <View style={styles.viewContainer}>
         <Text style={{ color: '#000', fontSize: 25, fontWeight: '700' }}>{'Edit Your Profile'}</Text>
@@ -110,7 +118,7 @@ const EditProfileScreen = ({ navigation }) => {
         </View>
       </View>
 
-      {/* <Text style={{ textAlign: 'center', marginTop: 12, color: '#3C404B' }}>0xCC00...b8E50</Text> */}
+      <Text style={{ textAlign: 'center', marginTop: 12, color: '#3C404B' }}>{UtilService.truncate(walletAddress)}</Text>
 
       <View style={{ marginHorizontal: 30, marginVertical: 20 }}>
 
@@ -120,7 +128,7 @@ const EditProfileScreen = ({ navigation }) => {
               placeholder={'Name'}
               placeholderTextColor={'#92959d'}
               value={title}
-              onChangeText={(e)=>setTitle(e)}
+              onChangeText={(e) => setTitle(e)}
             />
           </View>
 
@@ -129,7 +137,7 @@ const EditProfileScreen = ({ navigation }) => {
               placeholder={'Email'}
               placeholderTextColor={'#92959d'}
               value={email}
-              onChangeText={(e)=>setEmail(e)}
+              onChangeText={(e) => setEmail(e)}
               editable={false}
             />
           </View>
@@ -144,12 +152,12 @@ const EditProfileScreen = ({ navigation }) => {
 
           <TouchableOpacity
             style={[styles.button, { backgroundColor: '#000' }]}
-            onPress={()=> onSaveProfile()}
+            onPress={() => onSaveProfile()}
           >
             <Text style={{ color: '#fff', fontSize: 16 }}>Save</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btnLog} onPress={()=> logoutUser()}>
+          <TouchableOpacity style={styles.btnLog} onPress={() => logoutUser()}>
             <Text style={{ color: '#fff' }}>Log out</Text>
           </TouchableOpacity>
 

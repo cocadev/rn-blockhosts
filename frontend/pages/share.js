@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useMoralis } from "react-moralis";
 import { StyleSheet, Dimensions, TouchableOpacity, View, Text, ScrollView, Image } from "react-native";
-import Icon from 'react-native-vector-icons/AntDesign';
-import { useTheme } from "react-native-paper";
 import CustomHeader from "../Components/CustomHeader";
 import CustomNavbar from "../Components/CustomNavbar";
-
+import { WebView } from 'react-native-webview';
 
 const screenWidth = Dimensions.get('window').width;
 
-const ShareScreen = ({ route, navigation }) => {
+const ShareScreen = ({ navigation }) => {
 
-  const { colors } = useTheme();
+  const [ramper, setRamper] = useState();
+  const { isInitialized, Moralis } = useMoralis();
+
+  useEffect(() => {
+    async function initPlugin() {
+      Moralis.Plugins.fiat
+        .buy({}, { disableTriggers: true })
+        .then((data) => setRamper(data.data));
+    }
+    isInitialized && initPlugin();
+  }, [isInitialized]);
+
+  console.log('ramper', ramper)
 
   return (
     <View style={styles.root}>
@@ -19,7 +30,60 @@ const ShareScreen = ({ route, navigation }) => {
 
         <CustomHeader navigation={navigation} title={'My Tokens'} />
 
-        <View style={{alignItems: 'center'}}>
+        <View style={styles.webview}>
+          <WebView
+            style={styles.box}
+            originWhitelist={['*']}
+            source={{ html: `
+            <iframe
+  src="https://widget.onramper.com?color=266677&apiKey=pk_test_x5M_5fdXzn1fxK04seu0JgFjGsu7CH8lOvS9xZWzuSM0"
+  height="660px"
+  width="482px"
+  title="Onramper widget"
+  frameborder="0"
+  allow="accelerometer;
+  autoplay; camera; gyroscope; payment"
+  style="box-shadow: 1px 1px 1px 1px
+  rgba(0,0,0,0.2);"
+>
+  <a href="https://widget.onramper.com" target="_blank">Buy crypto</a>
+</iframe>
+          //   <iframe
+          //   src={${ramper}}
+          //   title="ramper"
+          //   frameBorder="no"
+          //   allow="accelerometer; autoplay; camera; gyroscope; payment;"
+          //   style={{
+          //     width: "420px",
+          //     height: "625px",
+          //     boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
+          //     border: "1px solid #e7eaf3",
+          //     borderRadius: "1rem",
+          //     backgroundColor: "white",
+          //   }}
+          // />
+          ` }}
+          />
+        </View>
+
+
+
+        {/* <iframe
+          src={ramper}
+          title="ramper"
+          frameBorder="no"
+          allow="accelerometer; autoplay; camera; gyroscope; payment;"
+          style={{
+            width: "420px",
+            height: "625px",
+            boxShadow: "0 0.5rem 1.2rem rgb(189 197 209 / 20%)",
+            border: "1px solid #e7eaf3",
+            borderRadius: "1rem",
+            backgroundColor: "white",
+          }}
+        /> */}
+
+        <View style={{ alignItems: 'center' }}>
           <Image source={require('../../assets/qr.png')} style={styles.banner} />
         </View>
 
@@ -27,12 +91,12 @@ const ShareScreen = ({ route, navigation }) => {
           <Text style={styles.t1}>Staff Scan to Redeeem</Text>
           <Text style={styles.t2}>
             The standard Lorem Ipsum passage, used since the 1500s</Text>
-            <Text style={styles.t3}>
+          <Text style={styles.t3}>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
           </Text>
         </View>
 
-        <TouchableOpacity style={[styles.button, { backgroundColor: '#727375' }]} onPress={()=>navigation.navigate('ReceiveToken')}>
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#727375' }]} onPress={() => navigation.navigate('ReceiveToken')}>
           <Text style={{ color: '#fff', fontSize: 16 }}>Cancel</Text>
         </TouchableOpacity>
 
@@ -185,6 +249,16 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginTop: 50,
     marginHorizontal: 30
+  },
+  webview: {
+    width:300,
+    height: 300,
+    borderWidth: 2,
+    borderColor: 'red'
+  },
+  box: {
+    width:300,
+    height: 300,
   }
 });
 

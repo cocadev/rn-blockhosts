@@ -47,6 +47,7 @@ const Stack = createStackNavigator();
 const ROUTES = [
   { name: 'SplashScreen', component: SplashScreen },
   { name: 'auth', component: AuthScreen },
+  { name: 'Web3Auth', component: Web3AuthScreen },
   { name: 'Home', component: ExploreScreen },
 
   { name: 'CreateProfile', component: CreateProfileScreen },
@@ -56,7 +57,6 @@ const ROUTES = [
   { name: 'Share', component: ShareScreen },
   { name: 'ReceiveToken', component: ReceiveTokenScreen },
   { name: 'Detail', component: DetailNFTScreen },
-  { name: 'Web3Auth', component: Web3AuthScreen },
   
   { name: 'NFTDetail', component: NFTDetailScreen },
   { name: 'NFTOwner', component: NFTOwnerScreen },

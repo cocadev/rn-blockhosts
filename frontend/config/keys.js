@@ -1,6 +1,6 @@
 
-export const MORALIS_APPID_TEST = 'V0y1FbsQZRMhHKbR9LJlVJyDTMNjlU6oDhjkb5WG' // testnet
-export const MORALIS_SERVER_URL_TEST = 'https://tkww0xuawtvc.usemoralis.com:2053/server' // testnet
+export const MORALIS_APPID_TEST = 'DbGCZFQGiRXLLtygrLNdJDz6W8eo8vM671Sp45LP' // testnet
+export const MORALIS_SERVER_URL_TEST = 'https://leubffeoop6q.usemoralis.com:2053/server' // testnet
 export const MORALIS_MASTER_KEY = '';
 
 export const MORALIS_APPID_MAIN = 'Xf05U8hPwtIrSRIXFZ94crY8YqvFe399QPyqUUSd' // mainnet

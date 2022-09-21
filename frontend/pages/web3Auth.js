@@ -35,7 +35,7 @@ export const Web3AuthScreen = ({ navigation }) => {
 
   const [key, setKey] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
-  const [email, onChangeEmail] = useState(null);
+  const [email, onChangeEmail] = useState();
 
   const { login, Moralis, user, isAuthenticated } = useMoralis();
 
@@ -114,6 +114,10 @@ export const Web3AuthScreen = ({ navigation }) => {
     }
   }
 
+  const testLogin = () => {
+    onCustomLogin('chrisiancuya@gmail.com', '!Lov3MyPiano')
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.main}>
@@ -151,6 +155,10 @@ export const Web3AuthScreen = ({ navigation }) => {
 
           <TouchableOpacity style={styles.input} onPress={loginEmail}>
             <Text style={{ textAlign: 'center', color: '#bbb' }}>Continue with Email</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.input} onPress={testLogin}>
+            <Text style={{ textAlign: 'center', color: '#bbb' }}>Test Login</Text>
           </TouchableOpacity>
 
         </View>

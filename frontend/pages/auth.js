@@ -1,12 +1,9 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, Image, View, TouchableOpacity, ImageBackground, } from 'react-native';
-import { useMoralis, useMoralisCloudFunction, useMoralisWeb3Api } from "react-moralis";
+import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
+import { useMoralis, useMoralisWeb3Api } from "react-moralis";
 import { useDispatch, useSelector } from "react-redux";
-import { onGetData } from "../store/actions/nfts/nfts";
-import { getUserData } from "../store/actions/users/users";
 import { useGetChainId } from "../hooks/useGetChainId";
 import { useToast } from "react-native-toast-notifications";
-import { PROD, } from "../config/keys";
 import { useWalletConnect } from "../WalletConnect";
 import { useNavigation } from "@react-navigation/native";
 
@@ -34,19 +31,23 @@ const AuthScreen = () => {
 
     authenticate({
       connector,
-      signingMessage: "Metasalt authentication",
+      signingMessage: "Blockhosts authentication",
     })
       .then((res) => {
-
+        console.log('res', res)
         if (authError) {
-          setVisible(true);
+          console.log('authError', authError)
+
+          // setVisible(true);
         } else {
           if (isAuthenticated) {
             navigation.navigate("Home");
           }
         }
       })
-      .catch(() => { });
+      .catch((e) => { 
+        console.log('e', e)
+      });
   };
 
   useEffect(() => {
@@ -73,7 +74,7 @@ const AuthScreen = () => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={handleCryptoLogin}>
-          <Text style={{ color: '#fff', fontSize: 16 }}>Connect External Wallet</Text>
+          <Text style={{ color: '#fff', fontSize: 16 }}>Connect External Wallet 2</Text>
         </TouchableOpacity>
       </View>
 

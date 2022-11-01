@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, Image, View, TouchableOpacity } from 'react-native';
 import { useMoralis } from "react-moralis";
 import { useWalletConnect } from "../WalletConnect";
@@ -13,8 +13,10 @@ const AuthScreen = () => {
   } = useMoralis();
   const connector = useWalletConnect();
   const navigation = useNavigation();
+  const [isWallet, setIsWallet] = useState();
 
   const handleCryptoLogin = () => {
+    // navigation.navigate("Home");
 
     authenticate({
       connector,
@@ -29,18 +31,23 @@ const AuthScreen = () => {
         } else {
           console.log('isAuthenticated', isAuthenticated)
           if (isAuthenticated) {
-            navigation.navigate("Home");
+            navigation.navigate("EditProfile");
+          } else {
+            // navigation.navigate("Home");
           }
         }
       })
-      .catch((e) => { 
+      .catch((e) => {
         console.log('e', e)
       });
   };
 
   useEffect(() => {
-    if(isAuthenticated){
-      navigation.navigate("Home");
+    if (isAuthenticated) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'EditProfile' }],
+      });
     }
   }, [isAuthenticated]);
 
@@ -49,21 +56,43 @@ const AuthScreen = () => {
 
       <View style={styles.viewContainer}>
         <Image source={require('../../assets/logo.png')} style={styles.logo} />
-        <Text style={{ color: '#fff', fontSize: 25, marginTop: 12 }}>{'BlackHosts Wallet'}</Text>
+        <Text style={{ color: '#fff', fontSize: 25, marginTop: 12 }}>{'Buurp Wallet'}</Text>
         <Text style={{ color: '#fff', fontSize: 15, textAlign: 'center', marginTop: 18, maxWidth: 240 }}>{'Buy, Store and Redeem Hospitality Tokens Easily'}</Text>
       </View>
 
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-        <TouchableOpacity
-          style={[styles.button, { backgroundColor: '#fff' }]}
-          onPress={() => navigation.navigate("Web3Auth")}
-        >
-          <Text style={{ color: '#000', fontSize: 16 }}>Login</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={handleCryptoLogin}>
-          <Text style={{ color: '#fff', fontSize: 16 }}>Connect External Wallet 2</Text>
-        </TouchableOpacity>
+        {isWallet && <View>
+          <TouchableOpacity style={[styles.button, { backgroundColor: '#fff', paddingVertical: 18 }]} onPress={handleCryptoLogin}>
+            <Image source={require('../../assets/metamask.png')} style={{height: 30, width: 150}} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.button, { backgroundColor: '#fff', paddingVertical: 12 }]} onPress={()=>{}}>
+            <Image source={require('../../assets/coinbase.png')} style={{height: 39, width: 150}} />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={()=>setIsWallet(false)}>
+            <Text style={{color: '#000', marginTop: 50, textAlign: 'center'}}>Back</Text>
+          </TouchableOpacity>
+        </View>}
+
+        {!isWallet && <View>
+          <TouchableOpacity style={[styles.button, { backgroundColor: '#fff' }]} onPress={()=>setIsWallet(true)}>
+            <Text style={{ color: '#000', fontSize: 16 }}>Connect Your Wallet</Text>
+          </TouchableOpacity>
+
+          <Text style={{ fontSize: 11, marginTop: 22, textAlign: 'center' }}>Don't have a wallet yet?</Text>
+          <Text style={{ fontSize: 11, marginTop: 0, textAlign: 'center' }}>You can still login with limited functions</Text>
+
+          <TouchableOpacity
+            style={[styles.button, { marginTop: 8 }]}
+            onPress={() => navigation.navigate("Web3Auth")}
+          >
+            <Text style={{ color: '#fff', fontSize: 16 }}>Login Without</Text>
+          </TouchableOpacity>
+          
+        </View>}
+
       </View>
 
       <View style={{ height: 20 }} />

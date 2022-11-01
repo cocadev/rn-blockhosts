@@ -6,6 +6,7 @@ import * as Linking from "expo-linking";
 import * as WebBrowser from "expo-web-browser";
 import { Buffer } from "buffer";
 import { useMoralis } from "react-moralis";
+import { useNavigation } from "@react-navigation/native";
 
 global.Buffer = global.Buffer || Buffer;
 
@@ -31,12 +32,12 @@ const REQUEST = {
   },
 }
 
-export const Web3AuthScreen = ({  }) => {
+export const Web3AuthScreen = ({ }) => {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [email, onChangeEmail] = useState();
-
-  const { login, Moralis,  } = useMoralis();
+  const navigation = useNavigation();
+  const { login, Moralis, signup } = useMoralis();
 
   const loginGoogle = async () => {
 
@@ -47,7 +48,6 @@ export const Web3AuthScreen = ({  }) => {
         redirectUrl: resolvedRedirectUrl,
         clientId: "57002573218-6v86g1cq8256g74o05l36amubabpgrpt.apps.googleusercontent.com", // google's client id
       });
-      console.log('sssssssstate ============> ', state)
       onCustomSignUp(state?.userInfo);
     } catch (e) {
       console.error(e);
@@ -73,7 +73,6 @@ export const Web3AuthScreen = ({  }) => {
   };
 
   const onCustomSignUp = async (userData) => {
-    console.log('userData', userData)
     const password = '!Lov3MyPiano';
 
     const me = new Moralis.User();
@@ -92,7 +91,7 @@ export const Web3AuthScreen = ({  }) => {
       onCustomLogin(userData?.email, password)
     } catch (error) {
       console.log("Error: " + error.code + " " + error.message, 'error')
-      if(error.code === 202){
+      if (error.code === 202) {
         onCustomLogin(userData?.email, password)
       }
     }
@@ -113,8 +112,26 @@ export const Web3AuthScreen = ({  }) => {
     }
   }
 
-  const testLogin = () => {
-    onCustomLogin('chrisiancuya@gmail.com', '!Lov3MyPiano')
+  const testLogin = async () => {
+
+    // const me = new Moralis.User();
+    // me.set("username", 'ccc');
+    // me.set("password", '!Lov3MyPiano');
+    // me.set("email", 'ccc@gmail.com');
+    // const testEmail = 'test222@gmail.com';
+    // try {
+    //   await signup('test222', '!Lov3MyPiano', 'test222@gmail.com')
+    //   console.log('Congratulations! SignUp Successful!');
+    //   onCustomLogin('test222@gmail.com', '!Lov3MyPiano')
+    // } catch (error) {
+    //   console.log("Error: " + error?.code + " " + error?.message, 'error')
+    //   if (error.code === 202) {
+    //     onCustomLogin('test222@gmail.com', '!Lov3MyPiano')
+    //   }
+    // }
+
+    // console.log('Congratulations! SignUp Successful!');
+    onCustomLogin('chunjomarieu@outlook.com', '!Lov3MyPiano')
   }
 
   return (
@@ -156,20 +173,17 @@ export const Web3AuthScreen = ({  }) => {
             <Text style={{ textAlign: 'center', color: '#bbb' }}>Continue with Email</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.input} onPress={testLogin}>
+          {/* <TouchableOpacity style={styles.input} onPress={testLogin}>
             <Text style={{ textAlign: 'center', color: '#bbb' }}>Test Login</Text>
+          </TouchableOpacity> */}
+
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Text style={{ textAlign: 'center', color: '#333', marginTop: 12 }}>Back</Text>
           </TouchableOpacity>
 
         </View>
 
-        <View style={{ padding: 12 }}>
-
-          {/* {key !== "" ? <Text>Key : {key} </Text> : null} */}
-          {/* {userInfo !== null ? <Text style={{ fontSize: 7 }}>UserInfo : {JSON.stringify(userInfo.userInfo)} </Text> : null} */}
-          {/* { errorMsg !== "" ? <Text>Error : {errorMsg} </Text> : null} */}
-          {/* <Text> Linking URL: {resolvedRedirectUrl} </Text> */}
-        </View>
-
+        <View style={{ padding: 12 }} />
 
         <View style={{ backgroundColor: '#fff', padding: 12, borderRadius: 20, flexDirection: 'row', justifyContent: 'space-between' }}>
 

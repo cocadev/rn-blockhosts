@@ -19,4 +19,6 @@ target 'moraliscreatereactnativedapp' do
   #   end
   # end
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
 end

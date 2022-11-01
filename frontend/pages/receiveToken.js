@@ -2,28 +2,82 @@ import React from "react";
 import { StyleSheet, Dimensions, TouchableOpacity, View, Text, ScrollView, Image, TextInput } from "react-native";
 import CustomHeader from "../Components/CustomHeader";
 import CustomNavbar from "../Components/CustomNavbar";
+import QRCode from 'react-native-qrcode-svg';
+import { useMoralisDapp } from "../providers/MoralisDappProvider/MoralisDappProvider";
+import { useWalletConnect } from "../WalletConnect";
+import { useMoralis } from "react-moralis";
 
-const screenWidth = Dimensions.get('window').width;
+const { width, height } = Dimensions.get('window');
 
 const ReceiveTokenScreen = ({ route, navigation }) => {
+
+  const { walletAddress } = useMoralisDapp();
+  const { authenticate, authError, isAuthenticated } = useMoralis();
+  const connector = useWalletConnect();
+
+  console.log('walletAddress: ', walletAddress);
+
+  const handleCryptoLogin = () => {
+    // navigation.navigate("Home");
+
+    authenticate({
+      connector,
+      signingMessage: "Blockhosts authentication",
+    })
+      .then((res) => {
+        console.log('res', res)
+        if (authError) {
+          console.log('authError', authError)
+
+          // setVisible(true);
+        } else {
+          console.log('isAuthenticated', isAuthenticated)
+          if (isAuthenticated) {
+            navigation.navigate("Home");
+          } else {
+            // navigation.navigate("Home");
+          }
+        }
+      })
+      .catch((e) => {
+        console.log('e', e)
+      });
+  };
 
   return (
     <View style={styles.root}>
 
+      {!walletAddress && <View style={styles.opacity}>
+        <TouchableOpacity style={[styles.buttonWallet, { backgroundColor: '#fff', paddingVertical: 18 }]} onPress={handleCryptoLogin}>
+          <Image source={require('../../assets/metamask.png')} style={{ height: 30, width: 150 }} />
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.buttonWallet, { backgroundColor: '#fff', paddingVertical: 12 }]} onPress={() => {navigation.goBack() }}>
+          <Image source={require('../../assets/coinbase.png')} style={{ height: 39, width: 150 }} />
+        </TouchableOpacity>
+
+      </View>}
+
       <ScrollView style={{ paddingHorizontal: 12 }}>
 
-        <CustomHeader navigation={navigation} title={'David Robinson'} />
+        <CustomHeader navigation={navigation} title={'SpiderMan'}/>
 
         <Text style={styles.t1}>Receive Tokens</Text>
 
         <View style={{ alignItems: 'center' }}>
-          <Image source={require('../../assets/qr.png')} style={styles.banner} />
+
+          <View style={styles.banner}>
+            <QRCode
+              value={walletAddress}
+              size={200}
+            />
+          </View>
 
           <Text style={styles.t1}>Scan address to recieve tokens</Text>
 
           <TextInput
             style={{ backgroundColor: '#fff', marginTop: 30, borderRadius: 11, paddingHorizontal: 12, paddingVertical: 7, minWidth: 250, textAlign: 'center' }}
-            placeholder={'0xCC00.893493..b8E50'}
+            placeholder={walletAddress}
           />
           <TouchableOpacity style={[styles.button, { backgroundColor: '#116b5c' }]} >
             <Text style={{ color: '#fff', fontSize: 16 }}>Share</Text>
@@ -71,15 +125,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#000'
   },
   banner: {
-    width: screenWidth - 100,
+    width: width - 100,
     marginTop: 20,
     borderRadius: 25,
-    height: screenWidth - 100,
+    height: width - 100,
     alignItems: 'center',
     backgroundColor: '#000',
+    justifyContent: 'center',
+    backgroundColor: '#fff'
   },
   video: {
-    width: screenWidth - 24,
+    width: width - 24,
     marginTop: 60,
     borderRadius: 15,
     height: 280,
@@ -180,6 +236,24 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginTop: 50,
     marginHorizontal: 30
+  },
+  opacity: {
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    position: 'absolute',
+    width: width,
+    height: height,
+    zIndex: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  buttonWallet: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 20,
+    width: 250,
+    backgroundColor: '#0c4d41',
+    borderRadius: 12,
+    marginTop: 20
   }
 });
 

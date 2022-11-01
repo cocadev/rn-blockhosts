@@ -1,19 +1,31 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
+import { useMoralis } from "react-moralis";
 import { View, StyleSheet, Image, TouchableOpacity, Text } from "react-native";
+import { useMoralisDapp } from "../providers/MoralisDappProvider/MoralisDappProvider";
+import UtilService from "../utils/utilService";
 
-export default function CustomHeader({title}) {
+export default function CustomHeader({ title, hello }) {
 
   const navigation = useNavigation();
+  const { user } = useMoralis();
+  const { walletAddress } = useMoralisDapp();
+
+  const profilImage = user?.attributes?.profileImage;
+  const userName = user?.attributes?.name || user?.attributes?.username
 
   return (
     <View style={styles.viewContainer}>
-      <View>
-        <Text style={{color: '#9E9E9E'}}>Hello again</Text>
-        <Text style={{fontSize: 24, fontWeight: '700', lineHeight: 27}}>{title || 'David Robinson'}</Text>
+      <View style={{ maxWidth: 260, justifyContent: 'center'}}>
+        {hello && <Text style={{ fontSize: 14, fontWeight: '300', color: '#666' }}>Hello again</Text>}
+        <Text style={{ fontSize: 20, fontWeight: '700' }}>{title || userName || '-'}</Text>
       </View>
-      <TouchableOpacity onPress={()=>navigation.navigate('Home')}>
-        <Image source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRSH1b36fzoEmkHaGdCizu25wFLTcj5weH9xRgOHRAnwLMPvr1Rs9GcYNM8_-b5bKtsNA&usqp=CAU'}} style={styles.logo}/>
+      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <Image source={profilImage ? { uri: profilImage } :
+          require('../../assets/profile.png')}
+          style={styles.logo}
+        />
+        <Text style={{ fontSize: 8, fontWeight: '700', color: '#999', textAlign: 'center' }}>{UtilService.truncate(walletAddress) || '-'}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -26,7 +38,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: 'space-between',
     marginTop: 8,
-    height: 70,
+    // backgroundColor: 'brown'
+    // height: 70,
   },
   logo: {
     height: 60,

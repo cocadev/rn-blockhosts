@@ -20,7 +20,7 @@ const useNativeBalance = (chain) => {
       fetchNativeBalance()
         .then((result) => {
           console.log("BALANCE", result);
-          const balanceInWei = Moralis.Units.FromWei(result.balance);
+          const balanceInWei = Moralis.Units.FromWei(result?.balance);
           const balanceFormatted = `${n4.format(balanceInWei)} ${native}`;
           setNativeBalance(balanceFormatted);
         })

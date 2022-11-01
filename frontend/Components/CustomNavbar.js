@@ -3,6 +3,7 @@ import { View, StyleSheet, Image } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from '@react-navigation/native';
@@ -15,19 +16,19 @@ export default function CustomNavbar() {
   return (
     <View style={styles.viewContainer}>
       <TouchableOpacity onPress={() => navigation.navigate('Marketplace')}>
-        <MaterialCommunityIcons name="wallet" size={28} color={route.name === 'Marketplace' ? '#22DBBB' : "#CACACA"} />
+        <Entypo name="shop" size={28} color={route.name === 'Marketplace' ? '#22DBBB' : "#CACACA"} />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate('Share')}>
-        <MaterialCommunityIcons name="qrcode-scan" size={28} color={(route.name === 'Share' || route.name === 'ReceiveToken') ? '#22DBBB' : "#CACACA"}/>
+      <TouchableOpacity onPress={() => navigation.navigate('ReceiveToken')}>
+        <MaterialCommunityIcons name="qrcode-scan" size={28} color={(route.name === 'ReceiveToken' || route.name === 'ReceiveToken') ? '#22DBBB' : "#CACACA"}/>
       </TouchableOpacity>
       
-      <TouchableOpacity onPress={() => navigation.navigate('Explore')}>
-        <Image source={require('../../assets/logo.png')} style={styles.logo} />
+      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+        <Image source={require('../../assets/logo2.png')} style={styles.logo} />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('MyToken')}>
-        <FontAwesome5 name="map-marked-alt" size={28} color={route.name === 'MyToken' ? '#22DBBB' : "#CACACA"} />
+        <MaterialCommunityIcons name="wallet" size={28} color={route.name === 'MyToken' ? '#22DBBB' : "#CACACA"} />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>

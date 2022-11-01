@@ -3,7 +3,10 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { LogBox } from "react-native";
 import SplashScreen from "./pages/splash";
-import NFTDetailScreen from "./pages/detailNFT";
+import NFTDetailScreen from "./pages/nftdetail";
+import NFTMarketDetailScreen from "./pages/nftMarketDetail";
+
+
 import MyTokensScreen from "./pages/myTokens";
 import CreateProfileScreen from "./pages/createProfile";
 import MarketplacePage from "./pages/marketplace";
@@ -15,6 +18,11 @@ import { ToastProvider } from 'react-native-toast-notifications'
 import DetailNFTScreen from "./pages/detailNFT";
 import ExploreScreen from "./pages/explore";
 import AuthScreen from "./pages/auth";
+import LazyMintScreen from "./pages/lazyMint";
+import RedeemScreen from "./pages/redeem";
+import ScanningScreen from "./pages/scanning";
+import ConfirmRedeemScreen from "./pages/confirmRedeem";
+
 const Moralis = require('moralis/react-native.js');
 const AsyncStorage = require('react-native').AsyncStorage;
 Moralis.setAsyncStorage(AsyncStorage);
@@ -35,7 +43,14 @@ const ROUTES = [
   { name: 'Share', component: ShareScreen },
   { name: 'ReceiveToken', component: ReceiveTokenScreen },
   { name: 'Detail', component: DetailNFTScreen },
-  { name: 'NFTDetail', component: NFTDetailScreen },
+  { name: 'NFTDetail', component: NFTDetailScreen }, // my tokens
+  { name: 'NFTMarketDetail', component: NFTMarketDetailScreen }, // my tokens
+
+  { name: 'Explore', component: LazyMintScreen },
+  { name: 'Redeem', component: RedeemScreen },
+  { name: 'Scanning', component: ScanningScreen },
+  { name: 'ConfirmRedeem', component: ConfirmRedeemScreen },
+  
 ]
 
 function App(): JSX.Element {
@@ -43,7 +58,7 @@ function App(): JSX.Element {
   return (
       <ToastProvider>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="SplashScreen">
+          <Stack.Navigator initialRouteName="ReceiveTokenScreen">
 
             {
               ROUTES.map((item, index) => <Stack.Screen

@@ -19,8 +19,6 @@ const { scheme } = expo;
 /**
  * Initialization of Moralis
  */
-const appId = 'ncfO2WzSPCTeT3vC3QzbIy2rZqcXNXzvV9ltCP8F';
-const serverUrl = 'https://pqadujhd5exm.usemoralis.com:2053/server';
 
 const environment = "native";
 // Initialize Moralis with AsyncStorage to support react-native storage
@@ -54,9 +52,10 @@ export const Providers = ({ children }: ProvidersProps) => {
   return (
     <WalletConnectProvider {...walletConnectOptions}>
       <MoralisProvider
-        appId={appId}
-        serverUrl={serverUrl}
-        environment={environment}>
+        appId={'4HBtq9v6DIZjsh6nR3Fzj9ScVPPWHQ6raZwCFd5F'}
+        serverUrl={'https://qkdgyskkax75.grandmoralis.com:2053/server'}
+      environment={environment}
+      >
         <MoralisDappProvider>
           <ApplicationProvider {...eva} theme={eva.light}>
             {children}

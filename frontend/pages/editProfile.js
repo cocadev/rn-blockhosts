@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, Image, View, TouchableOpacity, TextInput } from 'react-native';
+import React, { createRef, useEffect, useRef, useState } from "react";
+import { StyleSheet, Text, Image, View, TouchableOpacity, TextInput, Linking } from 'react-native';
 import { useMoralis } from "react-moralis";
 import { ScrollView } from "react-native-gesture-handler";
 import { useMoralisDapp } from "../providers/MoralisDappProvider/MoralisDappProvider";
 import FullLoading from '../Components/Loadings/fullLoading';
 import UtilService from '../utils/utilService'
+import ModalCamera from '../Components/ModalCamera';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+import CountryPicker from 'react-native-country-picker-modal';
+import PhoneInput from 'react-native-phone-number-input';
+import CheckBox from '@react-native-community/checkbox';
 
 const EditProfileScreen = ({ navigation }) => {
 
@@ -12,45 +18,68 @@ const EditProfileScreen = ({ navigation }) => {
   const { walletAddress, chainId } = useMoralisDapp();
   const [title, setTitle] = useState();
   const [email, setEmail] = useState();
+  const [country, setCountry] = useState('United Kingdom');
+  const [number, setNumber] = useState('');
+  const [phoneCode, setPhoneCode] = useState('GB');
   const [fileAvatar, setFileAvatar] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [isModalProfile, setIsModalProfile] = useState(false);
+  const countryRef = useRef(null);
+  const phoneInput = useRef(null);
+  const [formattedValue, setFormattedValue] = useState("");
+  const [loaded, setLoaded] = useState(false);
+  const [isSelected, setSelection] = useState(false);
 
-  console.log('user', user)
+  // console.log('title', title)
+  // console.log('email', email)
+  // console.log('country', country)
+  // console.log('fileAvatar', fileAvatar)
+  // console.log('number', number)
+  const isEnabledSave = title && email && country && number;
 
   useEffect(() => {
     if (user) {
       setTitle(user?.attributes?.name)
       setEmail(user?.attributes?.email)
       setFileAvatar(user?.attributes?.profileImage)
+      setCountry(user?.attributes?.country || 'United Kingdom')
+      setNumber(user?.attributes?.number)
+      setPhoneCode(user?.attributes?.phoneCode || 'GB');
+      setLoaded(true);
     }
   }, [user])
 
   const onSaveProfile = async () => {
+
+    if(!isEnabledSave){
+      return false
+    }
 
     setIsLoading(true);
     let avatar = fileAvatar;
     if (fileAvatar?.includes('/data:image')) {
       avatar = await uploadImage(fileAvatar);
     }
-    console.log('avatar:', avatar)
 
     let request = {
-      name: title,
-      email,
+      name: title || '',
+      email: email || '',
+      country: country || '',
+      number: number || '',
+      phoneCode: phoneCode || 'GB'
     }
     if (fileAvatar) {
       request.profileImage = avatar
     }
-    console.log('request:', request)
 
-    await setUserData(request).then(() => {
+    await setUserData(request).then((res) => {
       setIsLoading(false);
-      console.log('success!')
     }, (error) => {
       setIsLoading(false);
       console.log('error!', error)
     });
     setIsLoading(false);
+    navigation.navigate('Home')
   }
 
   const logoutUser = () => {
@@ -60,7 +89,8 @@ const EditProfileScreen = ({ navigation }) => {
     }
   };
 
-  const takePicture = async (number) => {
+  const takePicture = async () => {
+    console.log('there!')
 
     let res = await Permissions.askAsync(Permissions.CAMERA)
     if (res.status === 'granted') {
@@ -69,7 +99,7 @@ const EditProfileScreen = ({ navigation }) => {
         let image = await ImagePicker.launchCameraAsync({
           quality: 0.6,
           base64: true,
-          aspect: [4, number === 1 ? 1 : 4],
+          aspect: [4, 4],
           quality: 1,
           allowsEditing: true
         })
@@ -81,7 +111,8 @@ const EditProfileScreen = ({ navigation }) => {
     }
   }
 
-  const pickImage = async (number) => {
+  const pickImage = async () => {
+    console.log('here!')
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
@@ -102,6 +133,10 @@ const EditProfileScreen = ({ navigation }) => {
     return nftImageFile.ipfs();
   };
 
+  const onSelect = (country) => {
+    setCountry(country.name)
+  }
+
   return (
     <ScrollView style={styles.root}>
 
@@ -113,7 +148,17 @@ const EditProfileScreen = ({ navigation }) => {
       <View style={styles.viewContainer}>
         <Text style={{ color: '#000', fontSize: 25, fontWeight: '700' }}>{'Edit Your Profile'}</Text>
 
-        <Image source={fileAvatar ? { uri: fileAvatar } : require('../../assets/profile.png')} style={styles.logo} />
+        <TouchableOpacity onPress={() => setIsModalProfile(true)}>
+          <Image source={fileAvatar ? { uri: fileAvatar } :
+            require('../../assets/profile.png')}
+            style={styles.logo}
+          />
+          <Image source={
+            require('../../assets/upload.png')}
+            style={styles.upload}
+          />
+        </TouchableOpacity>
+
         <View style={{ flexDirection: 'row', marginTop: 5 }}>
         </View>
       </View>
@@ -132,39 +177,105 @@ const EditProfileScreen = ({ navigation }) => {
             />
           </View>
 
-          <View style={styles.button} >
+          <View style={styles.button}>
             <TextInput style={{ color: '#000', fontSize: 16 }}
               placeholder={'Email'}
               placeholderTextColor={'#92959d'}
               value={email}
               onChangeText={(e) => setEmail(e)}
-              editable={false}
+            />
+          </View>
+          
+          <View style={styles.button}>
+            <CountryPicker
+              ref={countryRef}
+              withEmoji
+              {...{
+                onSelect,
+              }}
+              style={styles.button}
+              placeholder={country}
             />
           </View>
 
-          <TouchableOpacity style={styles.button}>
-            <Text style={{ color: '#92959d', fontSize: 16 }}>Number</Text>
-          </TouchableOpacity>
+          <View>
 
-          <TouchableOpacity style={styles.button} >
-            <Text style={{ color: '#92959d', fontSize: 16 }}>Country</Text>
-          </TouchableOpacity>
+            {loaded ? <PhoneInput
+              ref={phoneInput}
+              defaultValue={number}
+              value={number}
+              defaultCode={phoneCode}
+              layout="first"
+              containerStyle={styles.button}
+              textContainerStyle={{ paddingVertical: 0, backgroundColor: '#eff2f6' }}
+              onChangeFormattedText={text => {
+                setFormattedValue(text);
+              }}
+              onChangeText={(text) => {
+                setNumber(text);
+              }}
+              onChangeCountry={(text) => setPhoneCode(text.cca2)}
+            /> : <View></View>}
+          </View>
+
+          {/* <Text>number : {number}</Text>
+              <Text>Formatted Value : {formattedValue}</Text>
+              <Text>Formatted Value : {phoneCode}</Text> */}
+
+          {/* <View style={styles.button}>
+            <TextInput style={{ color: '#000', fontSize: 16 }}
+              placeholder={'Number'}
+              placeholderTextColor={'#92959d'}
+              value={number}
+              onChangeText={(e) => setNumber(e)}
+            />
+          </View> */}
+
+          <View style={{  marginTop: 20, }}>
+            <View style={{  maxWidth: 260, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
+              <Text style={styles.text}>By clicking ‘Save’ below you are agreeing to  </Text>
+              <Text style={styles.text}>the</Text>
+              <TouchableOpacity onPress={() => Linking.openURL("https://blockhosts.io/user-terms")}>
+                <Text style={{ color: '#3adbbb', fontSize: 12 }}> terms and conditions </Text>
+              </TouchableOpacity>
+              <Text style={styles.text}>of use</Text>
+            </View>
+
+          </View>
 
           <TouchableOpacity
-            style={[styles.button, { backgroundColor: '#000' }]}
+            style={[styles.button, { backgroundColor: !isEnabledSave ? 'rgba(175, 236, 214, 0.8)' : '#22DBBB' }]}
             onPress={() => onSaveProfile()}
           >
             <Text style={{ color: '#fff', fontSize: 16 }}>Save</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.btnLog} onPress={() => logoutUser()}>
-            <Text style={{ color: '#fff' }}>Log out</Text>
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity onPress={() => navigation.navigate('Home')} style={{marginTop: 30 }}>
+              <Text style={{ color: '#3C404B', textDecorationLine: 'underline' }}>Go Back</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => logoutUser()} style={{marginTop: 15 }}>
+              <Text style={{ color: '#3C404B', textDecorationLine: 'underline' }}>Log out</Text>
+            </TouchableOpacity>
+          </View>
 
         </View>
       </View>
 
       <View style={{ height: 20 }} />
+
+      {isModalProfile && <ModalCamera
+        onClickPicker={() => {
+          setIsModalProfile(false);
+          pickImage();
+        }}
+        onClickCamera={() => {
+          setIsModalProfile(false);
+          takePicture();
+        }}
+        onClose={() => setIsModalProfile(0)}
+      />}
 
     </ScrollView>
   );
@@ -201,9 +312,9 @@ const styles = StyleSheet.create({
     marginTop: 40
   },
   logo: {
-    height: 130,
-    width: 130,
-    borderRadius: 65,
+    height: 180,
+    width: 180,
+    borderRadius: 90,
     marginTop: 12
   },
   right: {
@@ -216,10 +327,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 16,
-    minWidth: 250,
+    minWidth: 290,
     backgroundColor: '#eff2f6',
     borderRadius: 12,
-    marginTop: 20
+    marginTop: 20,
   },
   btnLog: {
     width: 120,
@@ -228,7 +339,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 30
+    margin: 30
+  },
+  text: {
+    textAlign: 'center',
+    color: '#92959d',
+    fontSize: 12
+  },
+  upload: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    width: 40,
+    height: 30
   }
 });
 

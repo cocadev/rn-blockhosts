@@ -1,34 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, View, StyleSheet, Image } from "react-native";
-import LottieView from "lottie-react-native";
-
-// import AsyncStorage from "@react-native-community/async-storage";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Animation from "../splashLottie1.json";
+import { Dimensions, View, StyleSheet, Image, Text, TouchableOpacity } from "react-native";
+const screenWidth = Dimensions.get('window').width;
 
 const SplashScreen = ({ navigation }) => {
-  //State for ActivityIndicator animation
-  const [animating, setAnimating] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setAnimating(false);
-      //Check if user_id is set or not
-      //If not then send for Authentication
-      //else send to Home Screen
-      AsyncStorage.getItem("user_id").then((value) =>
-        navigation.replace("auth")
-      );
-    }, 2000);
-  }, []);
 
   return (
     <View style={styles.container}>
-      {/* <Image
-        source={require("../moralis-logo.png")}
-        style={{ width: "90%", resizeMode: "contain", margin: 30 }}
-      /> */}
-      <LottieView source={Animation} loop autoplay />
+      <View style={styles.box}>
+
+        <Image
+          source={require('../../assets/new.png')}
+          style={styles.logo}
+        />
+
+        <Text style={{ color: '#fff', marginTop: 20, fontSize: 12 }}>Owning a Burping Ape gives you discounts, cashback, exclusive menu's, parties, loyalty and much more.</Text>
+
+        <View style={styles.gifBox}>
+          <Image
+            source={require('../../assets/gif.gif')}
+            style={styles.gif}
+          />
+        </View>
+        <Text style={{ color: '#fff' }}>Check out the collection inside</Text>
+      </View>
+
+      <TouchableOpacity style={{ marginTop: 30 }} onPress={()=>navigation.navigate('auth')}>
+        <Text style={{ textAlign: 'center' }}>Skip</Text>
+      </TouchableOpacity>
 
     </View>
   );
@@ -41,7 +39,38 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "white",
+    backgroundColor: "#22dbbb",
+  },
+  box: {
+    backgroundColor: '#FFACD8',
+    alignItems: 'center',
+    width: screenWidth - 40,
+
+    // boxShadow: '0px 26px 55px rgba(0, 0, 0, 0.07)',
+    padding: 25,
+    borderRadius: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  gifBox: {
+    borderWidth: 15,
+    borderColor: '#fff',
+    borderRadius: 18,
+    marginVertical: 20
+  },
+  logo: {
+    width: 280,
+    height: 120
+  },
+  gif: {
+    width: screenWidth - 160,
+    height: screenWidth - 160
   },
   activityIndicator: {
     alignItems: "center",

@@ -150,13 +150,13 @@ const EditProfileScreen = ({ navigation }) => {
 
         <TouchableOpacity onPress={() => setIsModalProfile(true)}>
           <Image source={fileAvatar ? { uri: fileAvatar } :
-            require('../../assets/profile.png')}
+            require('../../assets/edit.png')}
             style={styles.logo}
           />
-          <Image source={
+          {/* <Image source={
             require('../../assets/upload.png')}
             style={styles.upload}
-          />
+          /> */}
         </TouchableOpacity>
 
         <View style={{ flexDirection: 'row', marginTop: 5 }}>

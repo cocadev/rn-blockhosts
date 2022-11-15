@@ -10,10 +10,10 @@ const AuthScreen = () => {
     authenticate,
     authError,
     isAuthenticated,
+    user
   } = useMoralis();
   const connector = useWalletConnect();
   const navigation = useNavigation();
-  const [isWallet, setIsWallet] = useState();
 
   const handleCryptoLogin = () => {
     // navigation.navigate("Home");
@@ -43,45 +43,45 @@ const AuthScreen = () => {
   };
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'EditProfile' }],
-      });
+    if (isAuthenticated && user) {
+      if(user?.attributes?.number){
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Home' }],
+        });
+      }else{
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'EditProfile' }],
+        });
+      }
+
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, user]);
 
   return (
     <View style={styles.root}>
 
       <View style={styles.viewContainer}>
-        <Image source={require('../../assets/logo.png')} style={styles.logo} />
-        <Text style={{ color: '#fff', fontSize: 25, marginTop: 12 }}>{'Buurp Wallet'}</Text>
-        <Text style={{ color: '#fff', fontSize: 15, textAlign: 'center', marginTop: 18, maxWidth: 240 }}>{'Buy, Store and Redeem Hospitality Tokens Easily'}</Text>
+        <Text style={{ color: '#fff', fontSize: 44, marginTop: 12, fontWeight: '700' }}>{'BlockHosts'}</Text>
       </View>
 
       <View style={{ justifyContent: 'center', alignItems: 'center' }}>
 
-        {isWallet && <View>
+        <View>
           <TouchableOpacity style={[styles.button, { backgroundColor: '#fff', paddingVertical: 18 }]} onPress={handleCryptoLogin}>
-            <Image source={require('../../assets/metamask.png')} style={{height: 30, width: 150}} />
+            <Image source={require('../../assets/metamask.png')} style={{height: 24, width: 130}} />
           </TouchableOpacity>
 
           <TouchableOpacity style={[styles.button, { backgroundColor: '#fff', paddingVertical: 12 }]} onPress={()=>{}}>
-            <Image source={require('../../assets/coinbase.png')} style={{height: 39, width: 150}} />
+            <Image source={require('../../assets/coinbase.png')} style={{height: 32, width: 130}} />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={()=>setIsWallet(false)}>
-            <Text style={{color: '#000', marginTop: 50, textAlign: 'center'}}>Back</Text>
-          </TouchableOpacity>
-        </View>}
+        </View>
 
-        {!isWallet && <View>
-          <TouchableOpacity style={[styles.button, { backgroundColor: '#fff' }]} onPress={()=>setIsWallet(true)}>
-            <Text style={{ color: '#000', fontSize: 16 }}>Connect Your Wallet</Text>
-          </TouchableOpacity>
+        <View>
 
-          <Text style={{ fontSize: 11, marginTop: 22, textAlign: 'center' }}>Don't have a wallet yet?</Text>
+          <Text style={{ fontSize: 11, marginTop: 50, textAlign: 'center' }}>Don't have a wallet yet?</Text>
           <Text style={{ fontSize: 11, marginTop: 0, textAlign: 'center' }}>You can still login with limited functions</Text>
 
           <TouchableOpacity
@@ -91,8 +91,11 @@ const AuthScreen = () => {
             <Text style={{ color: '#fff', fontSize: 16 }}>Login Without</Text>
           </TouchableOpacity>
           
-        </View>}
+        </View>
 
+        <TouchableOpacity onPress={()=>navigation.goBack()}>
+            <Text style={{color: '#000', marginTop: 20, textAlign: 'center'}}>Back</Text>
+          </TouchableOpacity>
       </View>
 
       <View style={{ height: 20 }} />
@@ -145,7 +148,7 @@ const styles = StyleSheet.create({
   button: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 20,
+    paddingVertical: 17,
     minWidth: 250,
     backgroundColor: '#0c4d41',
     borderRadius: 12,

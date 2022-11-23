@@ -20,9 +20,9 @@ export default function CustomHeader({ title, hello }) {
         {hello && <Text style={{ fontSize: 14, fontWeight: '300', color: '#666' }}>Hello again</Text>}
         <Text style={{ fontSize: 20, fontWeight: '700' }}>{title || userName || '-'}</Text>
       </View>
-      <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+      <TouchableOpacity onPress={() => navigation.navigate('EditProfile')}>
         <Image source={profilImage ? { uri: profilImage } :
-          require('../../assets/profile.png')}
+          require('../../assets/edit.png')}
           style={styles.logo}
         />
         <Text style={{ fontSize: 8, fontWeight: '700', color: '#999', textAlign: 'center' }}>{UtilService.truncate(walletAddress) || '-'}</Text>

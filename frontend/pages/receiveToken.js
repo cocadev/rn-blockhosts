@@ -60,7 +60,7 @@ const ReceiveTokenScreen = ({ route, navigation }) => {
 
       <ScrollView style={{ paddingHorizontal: 12 }}>
 
-        <CustomHeader navigation={navigation} title={'SpiderMan'}/>
+        <CustomHeader navigation={navigation} title={''}/>
 
         <Text style={styles.t1}>Receive Tokens</Text>
 

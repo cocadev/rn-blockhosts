@@ -6,6 +6,7 @@ import android.net.Uri;
 
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.airbnb.android.react.maps.MapsPackage;
 import com.horcrux.svg.SvgPackage;
 import com.th3rdwave.safeareacontext.SafeAreaContextPackage;
 import com.facebook.react.ReactInstanceManager;
@@ -45,6 +46,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       List<ReactPackage> packages = new PackageList(this).getPackages();
       packages.add(new ModuleRegistryAdapter(mModuleRegistryProvider));
+      // packages.add(new MapsPackage()); // <-  ADD THIS LINE
       return packages;
     }
 

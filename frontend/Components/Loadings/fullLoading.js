@@ -45,18 +45,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: 'center',
-    // height: 70,
     paddingHorizontal: 12,
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.2)'
-    // opacity: 0.2
   },
   modalView: {
     width: 150,
     height: 150,
-    // padding: 15,
     alignItems: 'center',
-    // marginTop: 40,
     backgroundColor: '#fff',
     alignItems: "center",
     justifyContent: 'center',

@@ -21,4 +21,6 @@ target 'moraliscreatereactnativedapp' do
 
   pod 'RNSVG', :path => '../node_modules/react-native-svg'
 
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
 end

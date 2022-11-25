@@ -6,7 +6,6 @@ import SplashScreen from "./pages/splash";
 import NFTDetailScreen from "./pages/nftdetail";
 import NFTMarketDetailScreen from "./pages/nftMarketDetail";
 
-
 import MyTokensScreen from "./pages/myTokens";
 import CreateProfileScreen from "./pages/createProfile";
 import MarketplacePage from "./pages/marketplace";
@@ -22,6 +21,7 @@ import LazyMintScreen from "./pages/lazyMint";
 import RedeemScreen from "./pages/redeem";
 import ScanningScreen from "./pages/scanning";
 import ConfirmRedeemScreen from "./pages/confirmRedeem";
+import MapScreen from "./pages/map";
 
 const Moralis = require('moralis/react-native.js');
 const AsyncStorage = require('react-native').AsyncStorage;
@@ -32,7 +32,10 @@ LogBox.ignoreAllLogs();
 const Stack = createStackNavigator();
 
 const ROUTES = [
+
   { name: 'SplashScreen', component: SplashScreen },
+  { name: 'Map', component: MapScreen },
+
   { name: 'auth', component: AuthScreen },
   { name: 'Web3Auth', component: Web3AuthScreen },
   { name: 'Home', component: ExploreScreen },

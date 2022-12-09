@@ -24,7 +24,7 @@ const SplashScreen = ({ navigation }) => {
         <Text style={{ color: '#fff' }}>Check out the collection inside</Text>
       </View>
 
-      <TouchableOpacity style={{ marginTop: 30 }} onPress={()=>navigation.navigate('Map')}>
+      <TouchableOpacity style={{ marginTop: 30 }} onPress={()=>navigation.navigate('auth')}>
         <Text style={{ textAlign: 'center' }}>Skip</Text>
       </TouchableOpacity>
 

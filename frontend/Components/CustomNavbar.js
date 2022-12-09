@@ -15,8 +15,8 @@ export default function CustomNavbar() {
 
   return (
     <View style={styles.viewContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate('Marketplace')}>
-        <Entypo name="shop" size={28} color={route.name === 'Marketplace' ? '#22DBBB' : "#CACACA"} />
+      <TouchableOpacity onPress={() => navigation.navigate('Market')}>
+        <Entypo name="shop" size={28} color={route.name === 'Market' ? '#22DBBB' : "#CACACA"} />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate('ReceiveToken')}>

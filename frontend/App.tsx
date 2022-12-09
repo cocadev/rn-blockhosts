@@ -9,6 +9,7 @@ import NFTMarketDetailScreen from "./pages/nftMarketDetail";
 import MyTokensScreen from "./pages/myTokens";
 import CreateProfileScreen from "./pages/createProfile";
 import MarketplacePage from "./pages/marketplace";
+import MarketPage from "./pages/market";
 import EditProfileScreen from "./pages/editProfile";
 import ShareScreen from "./pages/share";
 import ReceiveTokenScreen from "./pages/receiveToken";
@@ -22,6 +23,7 @@ import RedeemScreen from "./pages/redeem";
 import ScanningScreen from "./pages/scanning";
 import ConfirmRedeemScreen from "./pages/confirmRedeem";
 import MapScreen from "./pages/map";
+import CashVoucherScreen from "./pages/cashVoucher";
 
 const Moralis = require('moralis/react-native.js');
 const AsyncStorage = require('react-native').AsyncStorage;
@@ -34,13 +36,14 @@ const Stack = createStackNavigator();
 const ROUTES = [
 
   { name: 'SplashScreen', component: SplashScreen },
+  { name: 'Cash', component: CashVoucherScreen },
   { name: 'Map', component: MapScreen },
-
   { name: 'auth', component: AuthScreen },
   { name: 'Web3Auth', component: Web3AuthScreen },
   { name: 'Home', component: ExploreScreen },
   { name: 'CreateProfile', component: CreateProfileScreen },
   { name: 'Marketplace', component: MarketplacePage },
+  { name: 'Market', component: MarketPage },
   { name: 'MyToken', component: MyTokensScreen },
   { name: 'EditProfile', component: EditProfileScreen },
   { name: 'Share', component: ShareScreen },
@@ -48,12 +51,10 @@ const ROUTES = [
   { name: 'Detail', component: DetailNFTScreen },
   { name: 'NFTDetail', component: NFTDetailScreen }, // my tokens
   { name: 'NFTMarketDetail', component: NFTMarketDetailScreen }, // my tokens
-
   { name: 'Explore', component: LazyMintScreen },
   { name: 'Redeem', component: RedeemScreen },
   { name: 'Scanning', component: ScanningScreen },
   { name: 'ConfirmRedeem', component: ConfirmRedeemScreen },
-  
 ]
 
 function App(): JSX.Element {

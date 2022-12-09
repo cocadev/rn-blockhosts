@@ -17,7 +17,7 @@ const MyTokensScreen = ({ navigation }) => {
   const onGetAllCollections = async () => {
     setNFTs([]);
     const options = {
-      chain: "0x5",
+      chain: "0x1",
     };
     const data = await Moralis.Web3API.account.getNFTs(options);
     setNFTs(data?.result)

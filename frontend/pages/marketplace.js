@@ -4,8 +4,9 @@ import { View, StyleSheet, Text, ScrollView, Image, TouchableOpacity, } from "re
 import CustomHeader from '../Components/CustomHeader';
 import CustomNavbar from "../Components/CustomNavbar";
 
-const MarketplacePage = ({ navigation }) => {
+const MarketplacePage = ({ navigation, route }) => {
 
+  const { data: id } = route.params;
   const Web3Api = useMoralisWeb3Api();
   const { isInitialized } = useMoralis();
   const [nfts, setNFTs] = useState([]);
@@ -16,7 +17,7 @@ const MarketplacePage = ({ navigation }) => {
 
   const onGetAllCollections = async () => {
     const c1 = {
-      address: '0xbce3781ae7ca1a5e050bd9c4c77369867ebc307e',
+      address: id,
       chain: 'eth',
       limit: 10
     };
@@ -34,39 +35,6 @@ const MarketplacePage = ({ navigation }) => {
         <View style={{ marginTop: 12 }}>
 
           {nfts.length > 0 && nfts.map((item, index) => {
-
-            const { name, image, description } = JSON.parse(item.metadata);
-            if (index !== 8) { return null }
-
-            return (<View style={{ flexDirection: 'row', backgroundColor: '#1f7868', padding: 10, borderRadius: 25, marginTop: 12 }}>
-              <View style={{ padding: 8, backgroundColor: '#fff', borderRadius: 30, alignItems: 'center' }}>
-                <Image source={{ uri: 'https://ipfs.moralis.io:2053/ipfs' + image.substring(6) }} style={{ width: 130, height: 150, borderRadius: 20 }} />
-                <TouchableOpacity style={{ backgroundColor: '#000', marginTop: 12, borderRadius: 20, alignItems: 'center', width: 70 }}>
-                  <Text style={{ color: '#fff' }}>Buy</Text>
-                </TouchableOpacity>
-              </View>
-              <View style={{ flex: 1, marginLeft: 12 }}>
-                <TouchableOpacity style={{ backgroundColor: '#0d453c', padding: 12, borderRadius: 20, alignItems: 'center' }}>
-                  <Text style={{ color: '#fff' }}>{name}</Text>
-                </TouchableOpacity>
-                <View style={{ flexDirection: 'row', marginTop: 10, justifyContent: 'center' }}>
-                  <TouchableOpacity style={{ backgroundColor: '#0d453c', padding: 12, borderRadius: 12, alignItems: 'center', flex: 1 }}>
-                    <Text style={{ color: '#fff', fontSize: 8 }}>Available</Text>
-                    <Text style={{ color: '#fff', fontSize: 12 }}>900</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={{ backgroundColor: '#0d453c', padding: 12, borderRadius: 12, alignItems: 'center', marginLeft: 8, flex: 1 }}>
-                    <Text style={{ color: '#fff', fontSize: 8 }}>Available</Text>
-                    <Text style={{ color: '#fff', fontSize: 12 }}>900</Text>
-                  </TouchableOpacity>
-                </View>
-                <Text style={{ color: '#fff', fontSize: 10, marginTop: 8, maxHeight: 80 }}>
-                  {description}
-                </Text>
-              </View>
-            </View>)
-          })}
-
-          {nfts.length > 0 && nfts.map((item, index) => {
             const { name, image, description } = JSON.parse(item.metadata);
 
             return (
@@ -79,7 +47,7 @@ const MarketplacePage = ({ navigation }) => {
                 }}
               >
                 <View style={{ padding: 8, backgroundColor: '#fff', borderRadius: 30, alignItems: 'center' }}>
-                  <Image source={{ uri: 'https://ipfs.moralis.io:2053/ipfs' + image.substring(6) }} style={{ width: 130, height: 150, borderRadius: 20 }} />
+                  <Image source={{ uri: ConvetImg(image) }} style={{ width: 130, height: 150, borderRadius: 20 }} />
                   <Text style={{ color: '#000', fontSize: 10 }}>{name}</Text>
                   <View style={{ backgroundColor: '#000', marginTop: 2, borderRadius: 20, alignItems: 'center', width: 70 }}>
                     <Text style={{ color: '#fff' }}>Buy</Text>
@@ -100,7 +68,7 @@ const MarketplacePage = ({ navigation }) => {
                     </View>
                   </View>
                   <Text style={{ color: '#174B42', fontSize: 10, marginTop: 8, maxHeight: 80 }}>
-                    {description}
+                    {ConvetImg(image)}
                   </Text>
                 </View>
               </TouchableOpacity>)
@@ -133,3 +101,10 @@ const styles = StyleSheet.create({
 });
 
 export default MarketplacePage;
+
+
+function ConvetImg(cImage) {
+  return (cImage && cImage.substring(0, 4) === 'ipfs')
+    ? 'https://ipfs.moralis.io:2053/ipfs/' + cImage.substring(7).replace('ipfs', '')
+    : cImage
+}

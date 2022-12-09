@@ -39,14 +39,14 @@ const ExploreScreen = ({ navigation }) => {
   const onGetActivity = async () => {
     setTransactions([])
     const data = await Web3Api.account.getNFTTransfers({
-      chain: '0x5',
+      chain: '0x1',
       limit: "10",
       address: walletAddress || '- '
     });
 
     const list = await Promise.all(data?.result.map(async (item, index) => {
       const meta = await Web3Api.token.getTokenIdMetadata({
-        chain: '0x5',
+        chain: '0x1',
         address: item.token_address,
         token_id: item.token_id,
       })

@@ -26,7 +26,7 @@ const ConfirmRedeemScreen = ({ navigation, route }) => {
     const { token_address, token_id, username } = JSON.parse(data);
 
     const meta = await Web3Api.token.getTokenIdMetadata({
-      chain: '0x5',
+      chain: '0x1',
       address: token_address,
       token_id: token_id,
     })
